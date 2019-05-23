@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>THUS | Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/settings.css">
+    <link rel="stylesheet" href="stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link href='/assets/thusicon.ico' rel='shortcut icon'>
+</head>
+
+<body>
+    <h1>SETTINGS</h1>
+
+
+
+    <div class="container-fluid">
+        <div class="row px-5 mx-5">
+            <div class="card-deck text-center">
+
+                <div id="card1" class="card mx-0">
+                    <div class="card-header d-inline">
+                        <h3 class="">Sesión 1</h3>
+                        <h6 class=""> Acelerometro </h6>
+                        <span v-if="acc">on</span>
+                    </div>
+                    <div class="card-body px-0">
+                        <div class="pb-2">
+                            <button class="btn btn-secondary">Solo</button>
+                            <button class="btn btn-secondary">Speaker</button>
+                        </div>
+                        <div class="col pb-1">
+                            <p class="d-inline">X: {{ x }}</p>
+                            <select class="d-inline" name="option">
+                                <option value="" disabled selected>enable</option>
+                                <option value="1">Option 1</option>
+                            </select>
+                        </div>
+                        <div class="col pb-1">
+                            <p class="d-inline">Y: {{ y }}</p>
+                            <select class="d-inline" name="option">
+                                <option value="" disabled selected>enable</option>
+                                <option value="1">Option 1</option>
+                            </select>
+                        </div>
+                        <div class="col pb-1.">
+                            <p class="d-inline">Z: {{ z }}</p>
+                            <select class="d-inline" name="option">
+                                <option value="" disabled selected>enable</option>
+                                <option value="1">Option 1</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- <div class="card mx-0">
+
+                    <div class="card-header d-inline">
+                        <h3 class="">Sesión 1</h3>
+                        <h6 class=""> Acelerometro </h6>
+                    </div>
+                    <div class="card-body px-0">
+                        <div class="pb-2">
+                            <button class="btn btn-secondary">Solo</button>
+                            <button class="btn btn-secondary">Speaker</button>
+                        </div>
+
+                        <div class="col pb-1">
+                            <p class="d-inline">X: 0000</p>
+                            <select class="d-inline" name="option">
+                                <option value="" disabled selected>enable</option>
+                                <option value="1">Option 1</option>
+                            </select>
+                        </div>
+                        <div class="col pb-1">
+                            <p class="d-inline">X: 0000</p>
+                            <select class="d-inline" name="option">
+                                <option value="" disabled selected>enable</option>
+                                <option value="1">Option 1</option>
+                            </select>
+                        </div>
+                        <div class="col pb-1.">
+                            <p class="d-inline">X: 0000</p>
+                            <select class="d-inline" name="option">
+                                <option value="" disabled selected>enable</option>
+                                <option value="1">Option 1</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/jquery-3.4.0.min.js"></script>
+    <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <script src="/javascripts/midiSettings/settings.js"></script>
+    <script src="/javascripts/p5/p5.min.js"></script>
+    <script src="/javascripts/p5/p5.dom.min.js"></script>
+    <script src="/javascripts/p5/p5.sound.min.js"></script>
+    
+</body>
+
+</html>
