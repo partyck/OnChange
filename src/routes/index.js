@@ -7,6 +7,14 @@ router.get('/', (req, res, next) => {
   res.render('index');
 });
 
+router.get('/synth', (req, res, next) => {
+  res.render('synth');
+});
+
+router.get('/background', (req, res, next) => {
+  res.render('background');
+});
+
 router.get('/knob', (req, res, next) => {
   if(!req.session.visitCount){
     req.session.visitCount = visitCounter;

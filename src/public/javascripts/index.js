@@ -1,5 +1,5 @@
 let font, fontSize = 130;
-let knob, kick, keyboard;
+let options = ["knob", "kick", "keyboard"];
 
 function preload() {
   font = loadFont('assets/BebasNeue-Regular.ttf');
@@ -11,28 +11,30 @@ function setup() {
   textSize(fontSize);
   background(0);
 
-  stroke(255, 204, 0);
-  strokeWeight(4);
-  fill(204);
-  knob = rect(0, height * 0.25, width, height * 0.25);
-  kick = rect(0, height * 0.5, width, height * 0.25);
-  keyboard = rect(0, height * 0.75, width, height * 0.25);
-
   fill(255);
   noStroke();
   let thusLabel = "THUS";
   textAlign(CENTER, CENTER);
   text(thusLabel, width * 0.5, height * 0.1);
 
-  fill(0);
-  let knobLabel = "KNOB";
-  text(knobLabel, width * 0.5, height * 0.35);
 
-  let kickLabel = "KICK";
-  text(kickLabel, width * 0.5, height * 0.6);
 
-  let keyLabel = "KEYS";
-  text(keyLabel, width * 0.5, height * 0.85);
+  options.forEach((option, index) => {
+    stroke(255, 204, 0);
+    strokeWeight(4);
+    fill(204);
+    let optionHeight = (0.75 / options.length);
+    let optionHeightPosition = optionHeight * (index + 1);
+    rectangle = rect(0, height * optionHeightPosition, width, height * optionHeight);
+
+    fill(0);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    let optionLabel = option;
+    text(optionLabel, width * 0.5, height * (optionHeightPosition + 0.1));
+
+  });
+
 }
 function mouseReleased() {
   if (mouseY > height * 0.75) {
