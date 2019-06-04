@@ -15,10 +15,10 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  // if (mouseIsPressed) {
     logic.listenAcc();
     logic.sendData();
-  }
+  // }
   printBackground();
   printLabel();
 }

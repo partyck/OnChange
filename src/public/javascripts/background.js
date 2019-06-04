@@ -1,10 +1,39 @@
+/* 
+   
+   A surface filled with one hundred medium to small sized circles. 
+   Each circle has a different size and direction, but moves at the same slow rate. 
+   Display: 
+   >>> A. The instantaneous intersections of the circles 
+   B. The aggregate intersections of the circles 
+   
+   Ported to p5.js by Casey Reas
+   11 July 2016
+   p5.js 0.5.2
+   
+   Restored by Casey Reas <http://reas.com> 
+   22 June 2016 
+   Processing v.3.1.1 <http://processing.org> 
+   
+   Implemented by Robert Hodgin <http://flight404.com> 
+   6 April 2004 
+   Processing v.68 <http://processing.org> 
+ 
+*/
+
+
+// ******************************************************************************** 
+// INITIALIZE VARIABLES 
+// ******************************************************************************** 
+
+// var xStage = 600; // x dimension of applet 
+// var yStage = 600; // y dimension of applet 
 var xStage = window.innerWidth; // x dimension of applet 
 var yStage = window.innerHeight; // y dimension of applet 
 
 var xMid = xStage / 2; // x midpoint of applet 
 var yMid = yStage / 2; // y midpoint of applet 
 
-var totalCircles = 100; // total number of circles 
+var totalCircles = 50; // total number of circles 
 var circle = []; // Circle object array 
 
 var gravity; // Strength of gravitational pull 
@@ -20,18 +49,16 @@ var bgColor;
 
 // ******************************************************************************** 
 // SETUP FUNCTION 
-//  (1024 x 768)
-//   1365 917
-//   1365 1024
 // ******************************************************************************** 
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeigh);
+  // createCanvas(600, 600);
+  createCanvas(window.innerWidth, window.innerHeight);
+  // bgColor = 255;
   bgColor = 0;
   background(bgColor);
-  frameRate(30);
+  frameRate(20);
   createCircles();
-  console.log(xStage, yStage);
 }
 
 // ******************************************************************************** 
@@ -47,14 +74,14 @@ function draw() {
 }
 
 function createCircles() {
-  gravity = .0075;
-  maxDistance = 100;
+  gravity = 0.075;
+  maxDistance = 50;
   angleOffset = random(360);
   //circle                         = new Circle[totalCircles]; 
   initRadius = 300;
   for (var i = 0; i < totalCircles; i++) {
     var initAngle = i * 3.6 + angleOffset + random(10);
-    var initTheta = (-((initAngle) * PI)) / 180;
+    var initTheta = (-((initAngle) * PI)) / 90;
     var initxv = cos(initTheta) * initRadius;
     var inityv = sin(initTheta) * initRadius;
     var xPos = xMid + initxv;
@@ -198,28 +225,24 @@ function Circle(xSent, ySent, xvSent, yvSent, indexSent) {
   this.render = function () {
 
     noStroke();
-    // fill(0, 25);
+    // fill(0, 255, 0, 25);
     fill(0, 255, 0);
     ellipse(this.x, this.y, this.r, this.r);
-    // fill(0 + this.r * 10, 50);
-    fill(0, 0 + this.r * 10, 0);
+    // fill(0, 0 + this.r * 10, 0, 50);
+    fill(0, 255, 0, );
     ellipse(this.x, this.y, this.r * .5, this.r * .5);
-    fill(0, 0 + this.r * 10, 0);
+    // fill(0, 0 + this.r * 10, 0);
+    fill(0, 255, 0);
     ellipse(this.x, this.y, this.r * .3, this.r * .3);
 
     if (this.numCollisions > 0) {
       noStroke();
-      // fill(0, 25);
-      fill(0, 255, 0);
+      fill(0, 255, 0, 25);
       ellipse(this.x, this.y, this.r, this.r);
 
-      // fill(0, 55);
-      fill(0, 255, 0);
-
+      fill(0, 255, 0, 55);
       ellipse(this.x, this.y, this.r * .85, this.r * .85);
-      // fill(0);
       fill(0, 255, 0);
-
       ellipse(this.x, this.y, this.r * .7, this.r * .7);
     }
 
@@ -227,9 +250,8 @@ function Circle(xSent, ySent, xvSent, yvSent, indexSent) {
       if (this.hasCollided[i] && i < this.index) {
         this.xd = this.x - circle[i].x;
         this.yd = this.y - circle[i].y;
-        // stroke(0, 150 - this.distances[i] * 2.0);
-        stroke(0, 255, 0);
-
+        stroke(0, 255, 0, 150 - this.distances[i] * 2.0);
+        // stroke(255, 0, 0);
         noFill();
         beginShape();
         vertex(this.x, this.y);
@@ -238,7 +260,8 @@ function Circle(xSent, ySent, xvSent, yvSent, indexSent) {
         vertex(this.x - this.xd * .75 + random(-1.0, 1.0), this.y - this.yd * .75 + random(-1.0, 1.0));
         vertex(circle[i].x, circle[i].y);
         endShape();
-        //line (x, y, circle[i].x, circle[i].y); 
+        // stroke(0, 255, 0);
+        // line (this.x, this.y, circle[i].x, circle[i].y); 
       }
     }
     noStroke();
@@ -266,7 +289,7 @@ function findAngle(x1, y1, x2, y2) {
 }
 
 function windowResized() {
-  resizeCanvas(window.innerWidth, window.innerHeight);
   xStage = window.innerWidth; // x dimension of applet 
-  yStage = window.innerHeight;
+  yStage = window.innerHeight; // y dimension of applet 
+  setup();
 }

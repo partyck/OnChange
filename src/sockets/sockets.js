@@ -15,7 +15,7 @@ module.exports = server => {
     .on('connection', socket => {
 
       socket.on('knob', data => {
-        let xmidi = scale(data.x, -9.81, 9.81, 0, 128);
+        let xmidi = scale(data.y, -9.81, 9.81, 0, 128);
         if (data.session < 16) {
           let channelX = parseInt(data.session) + 176;
           midiOut.sendMessage([channelX, 0, xmidi]);
