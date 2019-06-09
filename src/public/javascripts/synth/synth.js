@@ -1,66 +1,62 @@
-let osc, fft;
-let accX, accY, accZ;
+var attackLevel = 1;
+var releaseLevel = 0;
+
+var attackTime = 0.001;
+var decayTime = 0.2;
+var susPercent = 1;
+var releaseTime = 0.5;
+
+let osc, env;
+// let accX, accY, accZ;
 let playing = false;
+let playButton;
+let logic;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
+  logic = new Logic();
+  playButton = createButton("play");
+  playButton.position(10, height - 50);
+  playButton.size(200, 50)
+  playButton.mousePressed(toggle);
+
+  env = new p5.Envelope();
+  env.setADSR(attackTime, decayTime, susPercent, releaseTime);
+  env.setRange(attackLevel, releaseLevel);
+
   osc = new p5.Oscillator();
-  osc.amp(0);
-  fft = new p5.FFT();
+  osc.setType('sine');
+
   userStartAudio().then(function () {
     osc.start();
+    osc.amp(env);
   });
 }
 
 function draw() {
-  background(255);
-
-  let waveform = fft.waveform(); // analyze the waveform
-  beginShape();
-  strokeWeight(5);
-  for (let i = 0; i < waveform.length; i++) {
-    let x = map(i, 0, waveform.length, 0, width);
-    let y = map(waveform[i], -1, 1, height, 0);
-    vertex(x, y);
-  }
-  endShape();
-
-  // change oscillator frequency based on mouseX
-  let freq = map(accX, -10, 10, 40, 880);
-  // let freq = map(mouseX, 0, width, 40, 880);
-  osc.freq(freq);
-
-  let amp = map(mouseY, 0, height, 1, 0.01);
-  osc.amp(amp);
-
-  if (mouseIsPressed) {
-    playing = !playing;
-  }
-
+  background(0);
+  logic.listenAcc();
   if (playing) {
-    osc.amp(0.5);
-  } else {
-    osc.amp(0);
+    debugger;
+    logic.sendData();
+    background(0, 255, 0);
   }
-
+  let freq = map(logic.accX, -10, 10, 40, 880);
+  osc.freq(freq);
 }
 
-
-window.addEventListener('devicemotion', ev => {
-  var acc = ev.accelerationIncludingGravity;
-  let aX = acc.x;
-  let aY = Math.round(acc.y);
-  let aZ = Math.round(acc.z);
-  if (accX !== aX) {
-    accX = aX;
+function toggle() {
+  if (!playing) {
+    env.triggerAttack();
+    logic.sendTriggerAttack();
+    playing = true;
+  } else {
+    env.triggerRelease();
+    logic.sendtriggerRelease();
+    playing = false;
   }
-  if (accY !== aY) {
-    accY = aY;
-  }
-  if (accZ !== aZ) {
-    accZ = aZ;
-  }
-}, false);
+  // console.log(env);
+}
 
 function windowResized() {
   resizeCanvas(window.innerWidth, window.innerHeight);

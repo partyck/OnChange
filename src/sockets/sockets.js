@@ -27,8 +27,8 @@ module.exports = server => {
         console.log('kick session: ', kick);
         midiOut.sendMessage([144, kick, 120]);
         midiOut.sendMessage([128, kick, 120]);
-        midiOut.sendMessage([144, kick + 1, 120]);
-        midiOut.sendMessage([128, kick + 1, 120]);
+        // midiOut.sendMessage([144, kick + 1, 120]);
+        // midiOut.sendMessage([128, kick + 1, 120]);
       });
 
       socket.on('noteUp', data => {
@@ -39,6 +39,21 @@ module.exports = server => {
       socket.on('noteDown', data => {
         console.log('noteDown: ', data.keyDown);
         midiOut.sendMessage([128, data.keyDown, 100]);
+      });
+
+      socket.on('synth', data => {
+        console.log('synth', data);
+        io.emit('synth', data);
+      });
+
+      socket.on('attack', data =>{
+        console.log('attack', data);
+        io.emit('attack', data);
+      });
+
+      socket.on('release', data =>{        
+        console.log('release', data);
+        io.emit('release', data);
       });
 
     });

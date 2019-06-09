@@ -7,8 +7,20 @@ router.get('/', (req, res, next) => {
   res.render('index');
 });
 
+router.get('/sound', (req, res, next) => {
+  res.render('sound');
+});
+
 router.get('/synth', (req, res, next) => {
-  res.render('synth');
+  if(!req.session.visitCount){
+    req.session.visitCount = visitCounter;
+    visitCounter++;
+    console.log('session: ', req.session.visitCount);
+    res.render('synth', {session: req.session.visitCount});
+  }else{
+    console.log('session: ', req.session.visitCount);
+    res.render('synth', {session: req.session.visitCount});
+  }
 });
 
 router.get('/background', (req, res, next) => {
