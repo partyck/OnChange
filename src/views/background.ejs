@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>THUS | background</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='/assets/thusicon.ico' rel='shortcut icon'>
-    <style> body {padding: 0; margin: 0;} canvas {vertical-align: top;} </style>
-</head>
+<%- include('partials/header', {title: 'background'}); -%>
 
 <body scroll="no">
 
-    <script src="/socket.io/socket.io.js"></script>
     <script src="/javascripts/background.js"></script>
-    <script src="/javascripts/p5/p5.min.js"></script>
-    <script src="/javascripts/p5/p5.dom.min.js"></script>
-    <script src="/javascripts/p5/p5.sound.min.js"></script>
+    <%- include('partials/imports'); -%>
+
 </body>
 
 </html>
