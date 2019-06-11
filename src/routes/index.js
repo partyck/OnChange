@@ -7,6 +7,10 @@ router.get('/', (req, res, next) => {
   res.render('index');
 });
 
+router.get('/instruments', (req, res, next) => {
+  res.render('instrumentsIndex');
+});
+
 router.get('/sound', (req, res, next) => {
   res.render('sound');
 });

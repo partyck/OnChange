@@ -1,0 +1,16 @@
+@font-face {
+  font-family: myFirstFont;
+  src: url("../assets/BebasNeue-Regular.ttf");
+}
+
+a{
+  color: greenyellow;
+}
+a:hover {
+  color: green;
+}
+
+body{
+  background-color: black;
+  font-family: myFirstFont;
+}
