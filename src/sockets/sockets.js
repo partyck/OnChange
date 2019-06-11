@@ -32,26 +32,38 @@ module.exports = server => {
       });
 
       socket.on('noteUp', data => {
-        console.log('note: ', data.keyUp);
-        midiOut.sendMessage([144, data.keyUp, 100]);
+        let channel = "1001";
+        let str = parseInt(data.session - 1).toString(2);
+        for (let i = 0; i < 6 - str.length; i++) {
+          str = "0" + str;
+        }
+        channel = channel + str;
+        console.log('noteUp', channel);
+        midiOut.sendMessage([parseInt(channel, 2), data.keyUp, 100]);
       });
 
       socket.on('noteDown', data => {
-        console.log('noteDown: ', data.keyDown);
-        midiOut.sendMessage([128, data.keyDown, 100]);
+        let channel = "1000";
+        let str = parseInt(data.session).toString(2);
+        for (let i = 0; i < 6 - str.length; i++) {
+          str = "0" + str;
+        }
+        channel = channel + str;
+        console.log('noteDown', channel);
+        midiOut.sendMessage([parseInt(channel, 2), data.keyDown, 100]);
       });
 
       socket.on('synth', data => {
-        console.log('synth', data);
+        // console.log('synth', data);
         io.emit('synth', data);
       });
 
-      socket.on('attack', data =>{
+      socket.on('attack', data => {
         console.log('attack', data);
         io.emit('attack', data);
       });
 
-      socket.on('release', data =>{        
+      socket.on('release', data => {
         console.log('release', data);
         io.emit('release', data);
       });

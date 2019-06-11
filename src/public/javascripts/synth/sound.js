@@ -10,11 +10,16 @@ let osc, osc2, env;
 let playing = false;
 let playButton;
 let socket = io.connect();
+let xrect, yrect, zrect;
 
 let slider1, slider2;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
+  background(0);
+  strokeWeight(4);
+  stroke(0, 255, 0);
+  line(0, height / 2, width, height / 2);
 
   env = new p5.Envelope();
   env.setADSR(attackTime, decayTime, susPercent, releaseTime);
@@ -22,8 +27,8 @@ function setup() {
 
   osc = new p5.Oscillator();
   osc.setType('sine');
-  osc2 = new p5.Oscillator();
-  osc2.setType('triangle');
+  // osc2 = new p5.Oscillator();
+  // osc2.setType('triangle');
 
   slider1 = createSlider(40, 1300, 440);
   slider2 = createSlider(40, 1300, 440);
@@ -31,8 +36,8 @@ function setup() {
   userStartAudio().then(function () {
     osc.start();
     osc.amp(env);
-    osc2.start();
-    osc2.amp(env);
+    // osc2.start();
+    // osc2.amp(env);
   });
 }
 
@@ -52,21 +57,32 @@ socket.on('release', data => {
 
 socket.on('synth', data => {
   if (data.session == 1) {
-    // console.log({data});
-    freq = map(data.y, -10, 10, 40, 880);
+    // freq = map(data.beta, 0, 180, 40, 100);
+    freq = map(abs(data.gamma), 0, 90, 40, 800);
+    xrect = map(data.alpha, 0, 360, height / 2, -height / 2);
+    yrect = map(data.beta, -180, 180, height / 2, -height / 2);
+    zrect = map(abs(data.gamma), 0, 90, height / 2, -height / 2);
     osc.freq(freq);
   } else {
     // console.log({data});
-    freq = map(data.x, -10, 10, 40, 880);
-    osc2.freq(freq);
+    // freq = map(data.x, -10, 10, 40, 880);
+    // osc2.freq(freq);
   }
 });
 
 function draw() {
   background(0);
+  strokeWeight(4);
+  stroke(0, 255, 0);
+  line(0, height / 2, width, height / 2);
   if (playing) {
     debugger;
-    background(0, 255, 0);
+    noStroke();
+    fill(100);
+    rect(0, height / 2, width / 3, xrect);
+    rect(width / 3, height / 2, width / 3, yrect);
+    rect(width / 3 * 2, height / 2, width / 3, zrect);
+    // background(0, 255, 0);
   }
   // osc.freq(slider1.value());
   // osc2.freq(slider2.value());

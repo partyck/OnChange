@@ -52,7 +52,15 @@ router.get('/kick', (req, res, next) => {
 });
 
 router.get('/keyboard', (req, res, next) => {
-  res.render('keyboard');
+  if(!req.session.visitCount){
+    req.session.visitCount = visitCounter;
+    visitCounter++;
+    console.log('session: ', req.session.visitCount);
+    res.render('keyboard', {session: req.session.visitCount});
+  }else{
+    console.log('session: ', req.session.visitCount);
+    res.render('keyboard', {session: req.session.visitCount});
+  }
 });
 
 module.exports = router;

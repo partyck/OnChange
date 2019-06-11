@@ -15,6 +15,8 @@ let logic;
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   logic = new Logic();
+  logic.listenAcc();
+  // console.log(logic.alpha);
   playButton = createButton("play");
   playButton.position(10, height - 50);
   playButton.size(200, 50)
@@ -35,13 +37,23 @@ function setup() {
 
 function draw() {
   background(0);
-  logic.listenAcc();
   if (playing) {
     debugger;
     logic.sendData();
     background(0, 255, 0);
   }
-  let freq = map(logic.accX, -10, 10, 40, 880);
+
+  textSize(50);
+  fill(100);
+  let kickLabel = 'A: ' + logic.alpha;
+  text(kickLabel, 20, 100);
+  kickLabel = 'B: ' + logic.beta;
+  text(kickLabel, 20, 160);
+  kickLabel = 'G: ' + logic.gamma;
+  text(kickLabel, 20, 220);
+
+  // let freq = map(logic.accX, -10, 10, 40, 880);
+  let freq = map(abs(logic.gamma), 0, 90, 40, 800);
   osc.freq(freq);
 }
 

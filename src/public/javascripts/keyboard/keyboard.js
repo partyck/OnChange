@@ -9,7 +9,7 @@ function preload() {
 function setup() {
   pixelDensity(1);
   logic = new Logic();
-  change = map(1, 0, height, 0, 12);
+  // change = map(1, 0, height, 0, 12);
   createCanvas(window.innerWidth, window.innerHeight);
   noStroke();
   rectMode(CENTER);
@@ -44,10 +44,12 @@ function printLabel() {
   textSize(90);
   let kickLabel = 'KEYBOARD';
   text(kickLabel, 20, 100);
-
+  
   textSize(fontSize);
+  let sess = 'SESSION: ' + logic.session;
+  text(sess, 20, 140);
   let coorx = 'X: ' + mouseX;
-  text(coorx, 20, 140);
+  text(coorx, 20, 180);
 }
 
 function windowResized() {
