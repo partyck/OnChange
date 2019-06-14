@@ -14,24 +14,16 @@ class Logic {
       session: this.session,
       x: this.accX,
       y: this.accY,
-      z: this.accZ
+      z: this.accZ,
+      alpha: this.alpha,
+      beta: this.beta,
+      gamma: this.gamma
     });
   }
 
   listenAcc() {
     window.addEventListener('devicemotion', ev => {
       var acc = ev.accelerationIncludingGravity;
-      // var accWOG = ev.acceleration;
-      // var rot = ev.rotationRate;
-      // var inter = ev.interval;
-      // console.log('gravity:      ', acc);
-      // console.log('acceleration: ', accWOG);
-      // console.log('rotation:     ', rot);
-      // console.log('interval:     ', inter);
-      
-      // let aX = Math.round(ev.alpha * 100) / 100;
-      // let aY = Math.round(ev.beta * 100) / 100;
-      // let aZ = Math.round(ev.gamma * 100) / 100;
       let aX = Math.round(acc.x * 100) / 100;
       let aY = Math.round(acc.y * 100) / 100;
       let aZ = Math.round(acc.z * 100) / 100;
@@ -44,6 +36,11 @@ class Logic {
       if (logic.accZ !== aZ) {
         logic.accZ = aZ;
       }
+    });
+    window.addEventListener('deviceorientation', ev => {
+      this.alpha = Math.round(ev.alpha);
+      this.beta = Math.round(ev.beta);
+      this.gamma = Math.round(ev.gamma);
     });
   }
 

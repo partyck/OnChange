@@ -7,7 +7,6 @@ var susPercent = 1;
 var releaseTime = 0.5;
 
 let osc, env;
-// let accX, accY, accZ;
 let playing = false;
 let playButton;
 let logic;
@@ -16,6 +15,11 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   logic = new Logic();
   logic.listenAcc();
+  logic.socket.on('sound',data => {
+    if(data.session === logic.session){
+      toggle();  
+    }
+  });
   // console.log(logic.alpha);
   playButton = createButton("play");
   playButton.position(10, height - 50);
@@ -53,7 +57,7 @@ function draw() {
   text(kickLabel, 20, 220);
 
   // let freq = map(logic.accX, -10, 10, 40, 880);
-  let freq = map(abs(logic.gamma), 0, 90, 40, 800);
+  let freq = map(abs(logic.alpha), 0, 360, 40, 1000);
   osc.freq(freq);
 }
 
@@ -73,3 +77,5 @@ function toggle() {
 function windowResized() {
   resizeCanvas(window.innerWidth, window.innerHeight);
 }
+
+

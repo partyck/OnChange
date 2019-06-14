@@ -13,9 +13,6 @@ class Logic {
   }
 
   sendData() {
-    console.log("a: ", this.alpha);
-    console.log("b: ", this.beta);
-    console.log("g: ", this.gamma);
     this.socket.emit('synth', {
       session: this.session,
       x: this.accX,
@@ -28,11 +25,15 @@ class Logic {
   }
 
   sendtriggerRelease(){
-    this.socket.emit('release', {});
+    this.socket.emit('release', {
+      session: this.session
+    });
   }
 
   sendTriggerAttack(){
-    this.socket.emit('attack', {});
+    this.socket.emit('attack', {
+      session: this.session
+    });
   }
 
   listenAcc() {

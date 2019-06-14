@@ -16,9 +16,10 @@ module.exports = server => {
 
       socket.on('knob', data => {
         let xmidi = scale(data.y, -9.81, 9.81, 0, 128);
+        let alphamidi = scale(data.alpha, 0, 360, 0, 128);
         if (data.session < 16) {
           let channelX = parseInt(data.session) + 176;
-          midiOut.sendMessage([channelX, 0, xmidi]);
+          midiOut.sendMessage([channelX, 0, alphamidi]);
         }
       });
 
@@ -66,6 +67,11 @@ module.exports = server => {
       socket.on('release', data => {
         console.log('release', data);
         io.emit('release', data);
+      });
+
+      socket.on('sound', data => {
+        console.log('sound: ', data);
+        io.emit('sound', data);
       });
 
     });
