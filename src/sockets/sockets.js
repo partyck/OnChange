@@ -15,10 +15,13 @@ module.exports = server => {
     .on('connection', socket => {
 
       socket.on('knob', data => {
-        let xmidi = scale(data.y, -9.81, 9.81, 0, 128);
+        // let xmidi = scale(data.y, -9.81, 9.81, 0, 128);
         let alphamidi = scale(data.alpha, 0, 360, 0, 128);
         if (data.session < 16) {
           let channelX = parseInt(data.session) + 176;
+          console.log('knob', data.session);
+          console.log('chanel: ', channelX);
+          console.log('value: ', alphamidi);          
           midiOut.sendMessage([channelX, 0, alphamidi]);
         }
       });

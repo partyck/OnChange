@@ -24,9 +24,9 @@ function draw() {
 }
 
 function printBackground() {
-  var red = map(logic.accX, -9.81, 9.81, 0, 255);
-  var green = map(logic.accY, -9.81, 9.81, 0, 255);
-  var blue = map(logic.accZ, -9.81, 9.81, 0, 255);
+  var red = map(-logic.accX, -9.81, 9.81, 0, 255);
+  var green = map(-logic.accY, -9.81, 9.81, 0, 255);
+  var blue = map(-logic.accZ, -9.81, 9.81, 0, 255);
   background(red, green, blue);
 }
 
@@ -41,11 +41,11 @@ function printLabel() {
   let accLabel = 'Acelerometer:    ' + logic.accSuport;
   text(accLabel, 20, 180);
 
-  let coorx = 'X: ' + logic.accX;
+  let coorx = 'alpha: ' + logic.alpha;
   text(coorx, 20, 220);
-  let coory = 'Y: ' + logic.accY;
+  let coory = 'beta: ' + logic.beta;
   text(coory, 20, 260);
-  let coorz = 'Z: ' + logic.accZ;
+  let coorz = 'gamma: ' + logic.gamma;
   text(coorz, 20, 300);
 }
 

@@ -45,7 +45,7 @@ function setup() {
 
 socket.on('attack', data => {
   let env = enva[data.session];
-  console.log(env);
+  console.log(enva);
   env.triggerAttack();
   playing = true;
 });
@@ -58,11 +58,12 @@ socket.on('release', data => {
 
 socket.on('synth', data => {
   let freq = map(abs(data.alpha), 0, 360, 40, 1000);
+  // let freq = map(data.beta, -180, 180, 2110, 800);
   let osc = osca[data.session];
-  xrect = map(data.alpha, 0, 360, 0, height / 2);
-  yrect = map(data.beta, -180, 180, 0, height / 2);
-  zrect = map(data.gamma, -90, 90, 0, height / 2);
-  console.log({yrect});
+  xrect = map(data.alpha, 0, 360, 0, height/2);
+  yrect = map(data.beta, -180, 180, -(height / 2), height / 2);
+  zrect = map(data.gamma, -90, 90,-(height / 2), height / 2);
+  console.log(osca);
   osc.freq(freq);
 });
 
@@ -74,9 +75,9 @@ function draw() {
   if (playing) {
     noStroke();
     fill(100);
-    rect(0, height / 2, width / 3, -zrect);
-    rect(width / 3, height / 2, width / 3, yrect);
-    rect(width / 3 * 2, height / 2, width / 3, zrect);
+    rect(0, height / 2, width / 3, -xrect);
+    rect(width / 3, height / 2, width / 3, -yrect);
+    rect(width / 3 * 2, height / 2, width / 3, -zrect);
   }
 }
 
