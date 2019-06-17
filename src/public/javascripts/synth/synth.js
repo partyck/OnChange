@@ -22,9 +22,10 @@ function setup() {
   });
   // console.log(logic.alpha);
   playButton = createButton("play");
-  playButton.position(10, height - 50);
-  playButton.size(200, 50)
+  playButton.position(0, height - 100);
+  playButton.size(width , 50);
   playButton.mousePressed(toggle);
+  playButton.addClass("btn btn-secondary btn-lg btn-block");
 
   env = new p5.Envelope();
   env.setADSR(attackTime, decayTime, susPercent, releaseTime);
@@ -42,7 +43,6 @@ function setup() {
 function draw() {
   background(0);
   if (playing) {
-    debugger;
     logic.sendData();
     background(0, 255, 0);
   }

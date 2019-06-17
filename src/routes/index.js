@@ -67,4 +67,16 @@ router.get('/keyboard', (req, res, next) => {
   }
 });
 
+router.get('/dancerView', (req, res, next) => {
+  if(!req.session.visitCount){
+    req.session.visitCount = visitCounter;
+    visitCounter++;
+    console.log('session: ', req.session.visitCount);
+    res.render('dancerView', {session: req.session.visitCount});
+  }else{
+    console.log('session: ', req.session.visitCount);
+    res.render('dancerView', {session: req.session.visitCount});
+  }
+});
+
 module.exports = router;

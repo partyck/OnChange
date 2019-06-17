@@ -86,9 +86,12 @@ function windowResized() {
 }
 
 function keyPressed() {
-  if (keyCode > 96 && keyCode < 106) {
+  
+  if (key > 0 && key < 10) {
+    console.log({key});
     socket.emit('sound', {
-      session: key
+      session: key,
+      index: 0
     });
   }
 }

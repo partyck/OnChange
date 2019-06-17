@@ -77,5 +77,15 @@ module.exports = server => {
         io.emit('sound', data);
       });
 
+      socket.on('alpha', data => {
+        console.log('alpha: ', data);
+      });
+      socket.on('beta', data => {
+        console.log('beta: ', data);
+      });
+      socket.on('gamma', data => {
+        console.log('gamma: ', data);
+      });
+
     });
 };

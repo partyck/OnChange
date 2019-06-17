@@ -1,0 +1,8 @@
+@font-face {
+  font-family: myFirstFont;
+  src: url("../assets/BebasNeue-Regular.ttf");
+}
+
+.btn-hide{
+  font-size:40px
+}

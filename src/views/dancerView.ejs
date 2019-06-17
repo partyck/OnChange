@@ -1,0 +1,90 @@
+<%- include('partials/header', {title: 'Dancer View'}); -%>
+<link rel="stylesheet" href="/stylesheets/dancerView.css">
+
+<body scroll="no">
+    <div class="container">
+        <div class="row ">
+            <button id="hideButton" class="btn btn-secondary btn-lg" onclick="hideToggle()">X</button>
+        </div>
+    </div>
+    <div id="settings" class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <h2 class="text-right">Seción: </h2>
+            </div>
+            <div class="col">
+                <h2 class="text-left" id="session"><%= session %></h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <h4 class="text-right">Alpha(&alpha;): </h4>
+            </div>
+            <div class="col">
+                <h4 class="text-left" id="alphaTag"></h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <h4 class="text-right">Beta(&beta;): </h4>
+            </div>
+            <div class="col">
+                <h4 class="text-left" id="betaTag"></h4>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <h4 class="text-right">Gamma(&gamma;): </h4>
+            </div>
+            <div class="col">
+                <h4 class="text-left" id="gammaTag"></h4>
+            </div>
+        </div>
+        <div class="row my-5 mx-3">
+            <div class="col px-0">
+                <h2 class="text-right mx-2">enviar</h2>
+            </div>
+            <div class="col px-0">
+                <div class="btn-group">
+                    <button id="sendAlpha" type="button" class="btn btn-secondary btn-lg"
+                        onclick="send(0)">&alpha;</button>
+                    <button id="sendBeta" type="button" class="btn btn-secondary btn-lg"
+                        onclick="send(1)">&beta;</button>
+                    <button id="sendGamma" type="button" class="btn btn-secondary btn-lg"
+                        onclick="send(2)">&gamma;</button>
+                </div>
+            </div>
+        </div>
+        <div class="row my-5 mx-3">
+            <div class="col px-0">
+                <h2 class="text-right mx-2">sonido</h2>
+            </div>
+            <div class="col px-0">
+                <div class="btn-group">
+                    <button id="soundAlpha" type="button" class="btn btn-secondary btn-lg"
+                        onclick="sound(0)">&alpha;</button>
+                    <button id="soundBeta" type="button" class="btn btn-secondary btn-lg"
+                        onclick="sound(1)">&beta;</button>
+                    <button id="soundGamma" type="button" class="btn btn-secondary btn-lg"
+                        onclick="sound(2)">&gamma;</button>
+                </div>
+            </div>
+        </div>
+        <div class="row my-5">
+            <button id="colorB" type="button" class="btn btn-secondary btn-lg btn-block"
+                onclick="colorToggle()">color</button>
+        </div>
+    </div>
+
+    <%- include('partials/imports'); -%>
+    <!-- <script src="/javascripts/dancerView/dancerView.js"></script>
+    <script src="/javascripts/dancerView/logic.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="/javascripts/dancerView/dancer.js"></script>
+    <script src="/javascripts/dancerView/logic.js"></script>
+
+</body>
+
+</html>
