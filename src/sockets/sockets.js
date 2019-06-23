@@ -109,6 +109,9 @@ module.exports = server => {
         io.emit('color', data);
       });
 
+      socket.on('audienceAnswer', data => {
+        console.log(`audienceAnswer: ${data.a}`);
+      });
 
     });
 };

@@ -4,7 +4,7 @@ const router = express.Router();
 var visitCounter = 1;
 
 router.get('/', (req, res, next) => {
-  res.render('index');
+  res.render('audience');
 });
 
 router.get('/instruments', (req, res, next) => {
@@ -70,7 +70,7 @@ router.get('/keyboard', (req, res, next) => {
   }
 });
 
-router.get('/dancerView', (req, res, next) => {
+router.get('/d', (req, res, next) => {
   if(!req.session.visitCount){
     req.session.visitCount = visitCounter;
     visitCounter++;
