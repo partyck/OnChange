@@ -4,7 +4,7 @@ let socket = io.connect();
 let red;
 let green;
 let blue;
-let scene = 1;
+let scene = 0;
 let font;
 let questions = [
   `pregunta 1?`,
@@ -23,7 +23,6 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   textFont('Courier New');
   socketListen();
-  state = 0;
   red = 0;
   green = 0;
   blue = 0;
@@ -60,8 +59,10 @@ function draw() {
     case 3:
       background(red);
       break;
+    case 4:
+      background(0, 0, 255);
+      break;
     default:
-      background(0)
       break;
   }
 }
@@ -72,7 +73,7 @@ function windowResized() {
 
 function socketListen() {
   socket.on('synth', data => {
-    if (data.key === "beta") {
+    if (scene == 1) {
       switch (data.session) {
         case '1':
           red = map(abs(data.value - 90), 0, 50, 0, 255);
@@ -86,6 +87,9 @@ function socketListen() {
         default:
           break;
       }
+    }
+    if (scene == 3) {
+      red = map(data.value, 0, 360, 0, 255);
     }
   });
   socket.on("scene", data => {

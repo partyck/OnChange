@@ -1,37 +1,66 @@
 class Logic {
 
-  constructor() {
+  constructor(scene) {
+    this.scene = scene;
     this.r = 0;
     this.g = 0;
     this.b = 0;
     this.session = document.getElementById("session").textContent;
     this.socket = io.connect();
     this.accSuport = (window.DeviceMotionEvent ? true : false);
+    this.listenAcc();
   }
 
-  sendData(isSending) {
-    if (isSending[0]) {
-      this.socket.emit('synth', {
-        session: this.session,
-        key: 'alpha',
-        value: this.alpha
-      });
-    }
-    if (isSending[1]) {
+  sendData() {
+    if (this.scene == 1 || this.scene == 2) {
       this.socket.emit('synth', {
         session: this.session,
         key: 'beta',
         value: this.beta
       });
     }
-    if (isSending[2]) {
+    if (this.scene == 3) {
       this.socket.emit('synth', {
         session: this.session,
-        key: 'gamma',
-        value: this.gamma
+        key: 'alpha',
+        value: this.alpha
       });
     }
-    
+    // switch (this.scene) {
+    //   case 1:
+    //     this.socket.emit('synth', {
+    //       session: this.session,
+    //       key: 'beta',
+    //       value: this.beta
+    //     });
+    //     break;
+    //   case 2:
+    //     this.socket.emit('synth', {
+    //       scene: 2,
+    //       session: this.session,
+    //       key: 'alpha',
+    //       value: this.alpha
+    //     });
+    //     if (this.session === 3) {
+    //       this.socket.emit('color', {
+    //         scene: 2,
+    //         session: this.session,
+    //         key: 'beta',
+    //         value: this.beta
+    //       });
+    //     }
+    //     break;
+    //   case 3:
+    //     this.socket.emit('synth', {
+    //       scene: 3,
+    //       session: this.session,
+    //       key: 'alpha',
+    //       value: this.alpha
+    //     });
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 
   sendAttac() {

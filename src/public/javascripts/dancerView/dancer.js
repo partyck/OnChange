@@ -1,15 +1,6 @@
-var attackLevel = 1;
-var releaseLevel = 0;
-
-var attackTime = 0.001;
-var decayTime = 0.2;
-var susPercent = 1;
-var releaseTime = 0.5;
-
 let body;
 let hide = false;
 let colorB = true;
-let isInteraction = false;
 
 let sendElem;
 let isSending;
@@ -18,71 +9,25 @@ let playing;
 let soundElem;
 
 let logic;
-let numOsc = 3;
-let osca, enva;
 
 function setup() {
   body = select('body');
-  logic = new Logic();
-  logic.listenAcc();
-
-  soundElem = [
-    select('#soundAlpha'),
-    select('#soundBeta'),
-    select('#soundGamma')
-  ];
+  logic = new Logic(0);
+  listenSockets();
 
   sendElem = [
-    select('#sendAlpha'),
-    select('#sendBeta'),
-    select('#sendGamma')
+    select('#scene1'),
+    select('#scene2'),
+    select('#scene3'),
+    select('#scene4'),
+    select('#scene5'),
+    select('#scene6')
   ];
-
-  playing = [false, false, false];
-  isSending = [false, false, false];
-
-  osca = new Array();
-  enva = new Array();
-  for (var index = 0; index < numOsc; index++) {
-    let osc = new p5.Oscillator();
-    osc.setType('sine');
-
-    let env = new p5.Envelope();
-    env.setADSR(attackTime, decayTime, susPercent, releaseTime);
-    env.setRange(attackLevel, releaseLevel);
-    osc.start();
-    osc.amp(env);
-    osca.push(osc);
-    enva.push(env);
-  }
-
-  logic.socket.on('sound', data => {
-    if (data.session === logic.session) {
-      sound(data.index);
-      isInteraction = true;
-    }
-  });
-
-  userStartAudio().then(function () {
-
-  });
 }
 
 function draw() {
-  logic.sendData(isSending);
+  logic.sendData();
   printData();
-  if (isInteraction) {
-    stopOsc();
-  }
-  if (playing[0]) {
-    osca[0].freq(map(logic.alpha, 0, 360, 40, 1000));
-  }
-  if (playing[1]) {
-    osca[1].freq(map(abs(logic.beta + 90), 0, 180, 1000, 40));
-  }
-  if (playing[2]) {
-    osca[2].freq(map(logic.gamma, -90, 90, 40, 1000));
-  }
   if (colorB) {
     if (getMobileOperatingSystem() == 'iOS') {
       let col = color(255 - logic.r, 255 - logic.g, 255 - logic.b);
@@ -97,53 +42,47 @@ function draw() {
   }
 }
 
-function send(index) {
-  let ele = sendElem[index];
-  if (!isSending[index]) {
-    if (index === 0) {
-      logic.sendAttac();
-    }
-    // logic.sendAttac();
-    ele.addClass('btn-secondary');
-    ele.removeClass('btn-light');
-    isSending[index] = true;
+function changeScene(scene) {
+  debugger;
+  if (logic.scene !== scene) {
+    logic.sendAttac();
+    activeButton(scene);
+    logic.scene = scene;
   } else {
-    if (index === 0) {
-      logic.sendRelease();
-    }
-    // logic.sendRelease();
-    ele.removeClass('btn-secondary');
-    ele.addClass('btn-light');
-    isSending[index] = false;
+    logic.sendRelease();
+    releseButton(scene);
+    logic.scene = 0;
   }
 }
 
-function sound(index) {
-  let ele = soundElem[index];
-  if (!playing[index]) {
-    ele.addClass('btn-secondary');
-    ele.removeClass('btn-light');
-    enva[index].triggerAttack();
-    playing[index] = true;
-  } else {
+function activeButton(scene) {
+  let ele = sendElem[scene - 1];
+  ele.addClass('btn-secondary');
+  ele.removeClass('btn-light');
+  if (logic.scene !== 0) {
+    ele = sendElem[logic.scene - 1];
     ele.removeClass('btn-secondary');
     ele.addClass('btn-light');
-    enva[index].triggerRelease();
-    playing[index] = false;
   }
+}
+
+function releseButton(scene) {
+  let ele = sendElem[scene - 1];
+  ele.removeClass('btn-secondary');
+  ele.addClass('btn-light');
 }
 
 function hideToggle() {
-  let hideButton = select('#hideButton')
+  // let hideButton = select('#hideButton')
   if (!hide) {
     select('#settings').hide();
-    hideButton.addClass('btn-outline-dark');
-    hideButton.removeClass('btn-danger');
+    // hideButton.addClass('btn-outline-dark');
+    // hideButton.removeClass('btn-danger');
     hide = true;
   } else {
     select('#settings').show();
-    hideButton.removeClass('btn-outline-dark');
-    hideButton.addClass('btn-danger');
+    // hideButton.removeClass('btn-outline-dark');
+    // hideButton.addClass('btn-danger');
     hide = false;
   }
 }
@@ -177,16 +116,14 @@ function colorToggle() {
   }
 }
 
-function stopOsc() {
-  // console.log('game: ');
-  if (logic.beta < -80 && logic.beta > -100) {
-    sound(1);
-    isInteraction = false;
-  }
-}
-
 function printData() {
   select('#alphaTag').html(logic.alpha);
   select('#betaTag').html(logic.beta);
   select('#gammaTag').html(logic.gamma);
+}
+
+function listenSockets() {
+  logic.socket.on('scene', data =>{
+    changeScene(data.scene);
+  });
 }

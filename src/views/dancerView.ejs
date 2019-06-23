@@ -49,32 +49,27 @@
         <div class="row">
             <div class="col px-0">
                 <div class="btn-group btn-block">
-                    <button id="sendAlpha" type="button" class="btn btn-light btn-lg btn-abg"
-                        onclick="send(0)">1</button>
-                    <button id="sendBeta" type="button" class="btn btn-light btn-lg btn-abg"
-                        onclick="send(1)">2</button>
-                    <button id="sendGamma" type="button" class="btn btn-light btn-lg btn-abg"
-                        onclick="send(2)">3</button>
+                    <button id="scene1" type="button" class="btn btn-light btn-lg btn-abg py-4"
+                        onclick="changeScene(1)">1</button>
+                    <button id="scene2" type="button" class="btn btn-light btn-lg btn-abg"
+                        onclick="changeScene(2)">2</button>
+                    <button id="scene3" type="button" class="btn btn-light btn-lg btn-abg"
+                        onclick="changeScene(3)">3</button>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col px-0 mt-3">
-                <h2 class="text-left text-white mx-2">sonido</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col px-0">
+        <!-- <div class="row">
+            <div class="col px-0 my-3">
                 <div class="btn-group btn-block">
-                    <button id="soundAlpha" type="button" class="btn btn-light btn-lg btn-abg"
-                        onclick="sound(0)">&alpha;</button>
-                    <button id="soundBeta" type="button" class="btn btn-light btn-lg btn-abg"
-                        onclick="sound(1)">&beta;</button>
-                    <button id="soundGamma" type="button" class="btn btn-light btn-lg btn-abg"
-                        onclick="sound(2)">&gamma;</button>
+                    <button id="scene4" type="button" class="btn btn-light btn-lg btn-abg  py-4"
+                        onclick="changeScene(4)">4</button>
+                    <button id="scene5" type="button" class="btn btn-light btn-lg btn-abg"
+                        onclick="changeScene(5)">5</button>
+                    <button id="scene6" type="button" class="btn btn-light btn-lg btn-abg"
+                        onclick="changeScene(6)">6</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row mt-5">
             <button id="colorB" type="button" class="btn btn-light btn-lg btn-block"
                 onclick="colorToggle()">color</button>
@@ -82,11 +77,6 @@
     </div>
 
     <%- include('partials/imports'); -%>
-    <!-- <script src="/javascripts/dancerView/dancerView.js"></script>
-    <script src="/javascripts/dancerView/logic.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script> -->
     <script src="/javascripts/dancerView/dancer.js"></script>
     <script src="/javascripts/dancerView/logic.js"></script>
 

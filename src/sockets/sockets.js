@@ -78,38 +78,16 @@ module.exports = server => {
       });
 
       socket.on('synth', data => {
-        // let channelX = pitchBen(data.session);
-        // let value, msb, lsb;
-        // switch (data.key) {
-        //   case 'alpha':
-        //     value = scale(data.value, 0, 360, 0, 16383);
-        //     break;
-        //   case 'beta':
-        //     value = scale(Math.abs(data.value), 0, 180, 0, 16383);
-        //     break;
-        //   case 'gamma':
-        //     value = scale(Math.abs(data.value), 0, 90, 0, 16383);
-        //     break;
-        //   default:
-        //     break;
-        // }
-        // // console.log('pitch bend value: ', Math.round(value));
-        // value = fillZeros(value, 14);
-        // msb = value.slice(0, 7);
-        // lsb = value.slice(7, 14);
-        // msb = parseInt(msb, 2);
-        // lsb = parseInt(lsb, 2);
-        // midiOut.sendMessage([channelX, lsb, msb]);
         io.emit('synth', data);
       });
 
       socket.on('attack', data => {
-        console.log('attack', data);
+        // console.log('attack', data);
         io.emit('attack', data);
       });
 
       socket.on('release', data => {
-        console.log('release', data);
+        // console.log('release', data);
         io.emit('release', data);
       });
 
@@ -119,13 +97,18 @@ module.exports = server => {
       });
 
       socket.on('question', data => {
-        console.log('qquestion: ',{data});
-        io.emit('question',data);
+        console.log('qquestion: ', { data });
+        io.emit('question', data);
       });
 
       socket.on('scene', data => {
-        io.emit('scene',data);
+        io.emit('scene', data);
       });
+
+      socket.on('color', data => {
+        io.emit('color', data);
+      });
+
 
     });
 };
