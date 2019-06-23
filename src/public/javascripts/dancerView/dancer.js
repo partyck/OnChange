@@ -8,7 +8,7 @@ var releaseTime = 0.5;
 
 let body;
 let hide = false;
-let colorB = false;
+let colorB = true;
 let isInteraction = false;
 
 let sendElem;
@@ -71,21 +71,17 @@ function setup() {
 function draw() {
   logic.sendData(isSending);
   printData();
-  if(isInteraction){
-    debugger;
+  if (isInteraction) {
     stopOsc();
   }
   if (playing[0]) {
     osca[0].freq(map(logic.alpha, 0, 360, 40, 1000));
   }
   if (playing[1]) {
-    osca[1].freq(map(logic.beta, -180, 180, 40, 1000));
+    osca[1].freq(map(abs(logic.beta + 90), 0, 180, 1000, 40));
   }
   if (playing[2]) {
     osca[2].freq(map(logic.gamma, -90, 90, 40, 1000));
-  }
-  if (color) {
-    
   }
   if (colorB) {
     if (getMobileOperatingSystem() == 'iOS') {
@@ -96,22 +92,28 @@ function draw() {
       body.style('background-color', col);
     }
   } else {
-    let col = color(0,255,0);
+    let col = color(0);
     body.style('background-color', col);
   }
-
-
 }
 
 function send(index) {
   let ele = sendElem[index];
   if (!isSending[index]) {
-    ele.addClass('btn-success');
-    ele.removeClass('btn-secondary');
+    if (index === 0) {
+      logic.sendAttac();
+    }
+    // logic.sendAttac();
+    ele.addClass('btn-secondary');
+    ele.removeClass('btn-light');
     isSending[index] = true;
   } else {
-    ele.removeClass('btn-success');
-    ele.addClass('btn-secondary');
+    if (index === 0) {
+      logic.sendRelease();
+    }
+    // logic.sendRelease();
+    ele.removeClass('btn-secondary');
+    ele.addClass('btn-light');
     isSending[index] = false;
   }
 }
@@ -119,13 +121,13 @@ function send(index) {
 function sound(index) {
   let ele = soundElem[index];
   if (!playing[index]) {
-    ele.addClass('btn-success');
-    ele.removeClass('btn-secondary');
+    ele.addClass('btn-secondary');
+    ele.removeClass('btn-light');
     enva[index].triggerAttack();
     playing[index] = true;
   } else {
-    ele.removeClass('btn-success');
-    ele.addClass('btn-secondary');
+    ele.removeClass('btn-secondary');
+    ele.addClass('btn-light');
     enva[index].triggerRelease();
     playing[index] = false;
   }
@@ -136,12 +138,12 @@ function hideToggle() {
   if (!hide) {
     select('#settings').hide();
     hideButton.addClass('btn-outline-dark');
-    hideButton.removeClass('btn-secondary');
+    hideButton.removeClass('btn-danger');
     hide = true;
   } else {
     select('#settings').show();
     hideButton.removeClass('btn-outline-dark');
-    hideButton.addClass('btn-secondary');
+    hideButton.addClass('btn-danger');
     hide = false;
   }
 }
@@ -165,20 +167,20 @@ function getMobileOperatingSystem() {
 function colorToggle() {
   let ele = select('#colorB');
   if (!colorB) {
-    ele.addClass('btn-success');
-    ele.removeClass('btn-secondary');
+    ele.addClass('btn-secondary');
+    ele.removeClass('btn-light');
     colorB = true;
   } else {
     colorB = false;
-    ele.removeClass('btn-success');
-    ele.addClass('btn-secondary');
+    ele.removeClass('btn-secondary');
+    ele.addClass('btn-light');
   }
 }
 
 function stopOsc() {
-  console.log('game: ');
-  if(logic.beta < -80 && logic.beta > -100){
-    sound(0);
+  // console.log('game: ');
+  if (logic.beta < -80 && logic.beta > -100) {
+    sound(1);
     isInteraction = false;
   }
 }

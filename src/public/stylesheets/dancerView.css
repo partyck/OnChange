@@ -4,5 +4,14 @@
 }
 
 .btn-hide{
-  font-size:40px
+  font-size:40px;
+}
+
+.btn-abg{
+  font-size:40px;
+  /* size: 100px; */
+}
+
+.session-l{
+  font-size: 30px;
 }

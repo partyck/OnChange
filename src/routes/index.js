@@ -30,6 +30,9 @@ router.get('/synth', (req, res, next) => {
 router.get('/background', (req, res, next) => {
   res.render('background');
 });
+router.get('/background2', (req, res, next) => {
+  res.render('background2');
+});
 
 router.get('/knob', (req, res, next) => {
   if(!req.session.visitCount){

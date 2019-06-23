@@ -8,6 +8,8 @@ var releaseTime = 0.5;
 
 const numOsc = 3;
 
+let typeOsc;
+
 let osca, enva;
 let playing = false;
 let socket = io.connect();
@@ -19,17 +21,17 @@ function setup() {
   strokeWeight(4);
   stroke(0, 255, 0);
   line(0, height / 2, width, height / 2);
+  typeOsc = ['sine', 'square', 'sawtooth'];
 
-  env = new p5.Envelope();
-  env.setADSR(attackTime, decayTime, susPercent, releaseTime);
-  env.setRange(attackLevel, releaseLevel);
+  // env = new p5.Envelope();
+  // env.setADSR(attackTime, decayTime, susPercent, releaseTime);
+  // env.setRange(attackLevel, releaseLevel);
 
   osca = new Array();
   enva = new Array();
   for (var index = 0; index < numOsc; index++) {
     let osc = new p5.Oscillator();
     osc.setType('sine');
-
     let env = new p5.Envelope();
     env.setADSR(attackTime, decayTime, susPercent, releaseTime);
     env.setRange(attackLevel, releaseLevel);
@@ -44,28 +46,57 @@ function setup() {
 }
 
 socket.on('attack', data => {
-  let env = enva[data.session];
-  console.log(enva);
+  let env = enva[data.session - 1];
+  // debugger;
   env.triggerAttack();
   playing = true;
 });
 
 socket.on('release', data => {
-  let env = enva[data.session];
+  let env = enva[data.session - 1];
   env.triggerRelease();
   playing = false;
 });
 
 socket.on('synth', data => {
-  let freq = map(abs(data.alpha), 0, 360, 40, 1000);
-  // let freq = map(data.beta, -180, 180, 2110, 800);
-  let osc = osca[data.session];
-  xrect = map(data.alpha, 0, 360, 0, height/2);
-  yrect = map(data.beta, -180, 180, -(height / 2), height / 2);
-  zrect = map(data.gamma, -90, 90,-(height / 2), height / 2);
-  console.log(osca);
+  let freq = 0;
+  if (data.key === 'alpha') {
+    freq = map(abs(data.value), 0, 360, 40, 1000);
+  }
+  if (data.key === 'beta') {
+    freq = map(abs(data.value), 0, 180, 40, 1000);
+  }
+  if (data.key === 'gamma') {
+    freq = map(abs(data.value), 0, 90, 40, 1000);
+  }
+  let osc = osca[data.session - 1];
   osc.freq(freq);
+  switch (data.session) {
+    case 1:
+      xrect = map(data.value, 0, 360, 0, height / 2);
+      break;
+    case 2:
+      yrect = map(data.value, -180, 180, -(height / 2), height / 2);
+      break;
+    case 3:
+      zrect = map(data.value, -90, 90, -(height / 2), height / 2);
+      break;
+    default:
+      break;
+  }
 });
+
+
+// socket.on('oscFrec', data => {
+//   let osc = osca[data.session - 1];
+//   let freq = map(abs(data.alpha), 0, 360, 40, 1000);
+//   xrect = map(data.alpha, 0, 360, 0, height / 2);
+//   yrect = map(data.beta, -180, 180, -(height / 2), height / 2);
+//   zrect = map(data.gamma, -90, 90, -(height / 2), height / 2);
+
+//   osc.freq(freq);
+// });
+
 
 function draw() {
   background(0);
@@ -86,12 +117,25 @@ function windowResized() {
 }
 
 function keyPressed() {
-  
   if (key > 0 && key < 10) {
-    console.log({key});
+    console.log({ key });
     socket.emit('sound', {
       session: key,
-      index: 0
+      index: 1
     });
   }
 }
+
+function sendQ(i){
+  console.log("send");
+  socket.emit('question',{
+    index: i
+  });
+} 
+
+function changeScene(i){
+  console.log(`scene: ${i}`);
+  socket.emit('scene',{
+    scene: i
+  });
+} 

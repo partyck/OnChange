@@ -11,23 +11,39 @@ class Logic {
 
   sendData(isSending) {
     if (isSending[0]) {
-      this.socket.emit('alpha', {
+      this.socket.emit('synth', {
         session: this.session,
-        alpha: this.alpha
+        key: 'alpha',
+        value: this.alpha
       });
     }
     if (isSending[1]) {
-      this.socket.emit('beta', {
+      this.socket.emit('synth', {
         session: this.session,
-        beta: this.beta
+        key: 'beta',
+        value: this.beta
       });
     }
     if (isSending[2]) {
-      this.socket.emit('gamma', {
+      this.socket.emit('synth', {
         session: this.session,
-        gamma: this.gamma
+        key: 'gamma',
+        value: this.gamma
       });
     }
+    
+  }
+
+  sendAttac() {
+    this.socket.emit('attack', {
+      session: this.session
+    })
+  }
+
+  sendRelease() {
+    this.socket.emit('release', {
+      session: this.session
+    });
   }
 
   listenAcc() {
