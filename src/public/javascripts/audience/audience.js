@@ -1,6 +1,23 @@
 let socket;
-let questions;
-let timerLimit = 100;
+let questions = [
+  {
+    q: 'para continuar presiona el botón verde',
+    a: [' ']
+  },
+  {
+    q: '		     Idioma:',
+    a: ['Pytoñol', 'Javanis']
+  },
+  {
+    q: '		     Indumentaria:',
+    a: [' ', ' ']
+  },
+  {
+    q: '		     Peinado:',
+    a: ['Cola', 'Suelto']
+  }
+];
+let timerLimit = 1000;
 
 let actualQuestion;
 let isQuestion;
@@ -11,21 +28,6 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   socket = io.connect();
   isQuestion = false;
-  questions = [
-    {
-      q: 'pregunta 1?\nlaskdlaskdlaksmd',
-      a: ['respuesta 1', 'respuesta 2']
-    },
-    {
-      q: 'pregunta 2?',
-      a: ['respuesta 1', 'respuesta 2', 'respuesta 3']
-    },
-    {
-      q: 'pregunta 3?',
-      a: ['respuesta 1', 'respuesta 2', 'respuesta 3', 'respuesta 4']
-    }
-  ];
-
   // TEXT SETTING
   textFont('Courier New');
   textAlign(CENTER, CENTER);
@@ -59,16 +61,18 @@ function printQuestion() {
 function printOptions() {
   let as = questions[actualQuestion].a;
   let headDistance = height / 3;
-  buttonsHeight = headDistance * 2 / as.length;
-  as.forEach((a, i) => {
-    fill(100);
-    stroke(255, 0, 0);
-    strokeWeight(4);
-    rect(0, headDistance + buttonsHeight * i, width, buttonsHeight);
-    fill(255);
-    noStroke();
-    text(a, width / 2, headDistance + buttonsHeight * i + buttonsHeight / 2);
-  });
+  buttonsHeight = headDistance * 2 / 2;
+  fill(204, 255, 51);
+  stroke(100);
+  strokeWeight(10);
+  rect(10, headDistance + buttonsHeight * 0, width - 15, buttonsHeight);
+  fill(255, 102, 153);
+  rect(10, headDistance + buttonsHeight * 1, width - 15, buttonsHeight);
+  fill(0);
+  noStroke();
+  textStyle(BOLD);
+  text(as[0], width / 2, headDistance + buttonsHeight * 0 + buttonsHeight / 2);
+  text(as[1], width / 2, headDistance + buttonsHeight * 1 + buttonsHeight / 2);
 }
 
 function printTimer() {
@@ -90,7 +94,7 @@ function touchEnded() {
   if (isQuestion) {
     if (mouseY > height / 3) {
       let distance = mouseY - height / 3;
-      let option = round(distance / buttonsHeight);
+      let option = Math.floor(distance / buttonsHeight)
       sendAnswer(option);
     }
   }

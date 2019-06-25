@@ -22,11 +22,14 @@ class ConsoleSimulator {
   addObj(obj) {
     let objString = JSON.stringify(obj);
     this.texts.push(objString);
+    if (this.texts.length > this.numerLines) {
+      this.texts.shift();
+    }
   }
 
   addString(strng) {
     this.texts.push(strng);
-    if (this.texts.length > this.numerLines ) {
+    if (this.texts.length > this.numerLines) {
       this.texts.shift();
     }
   }

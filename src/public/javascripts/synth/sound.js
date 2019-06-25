@@ -15,6 +15,9 @@ let playing = false;
 let socket = io.connect();
 
 let scene = 0;
+let order = ['t', 'q', 't', 't', 't', 'q', 't', 'q', 't', 'q', 't'];
+let textCounter = 0;
+let questionCounter = 0;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -114,13 +117,19 @@ function sendQ(i) {
   });
 }
 
+function sendText(i) {
+  console.log("send");
+  socket.emit('text', {
+    index: i
+  });
+}
+
 function changeScene(i) {
   scene = i;
   console.log(`scene: ${i}`);
   socket.emit('scene', {
     scene: scene
   });
-
 }
 
 function nextScene() {
@@ -128,5 +137,15 @@ function nextScene() {
   socket.emit('scene', {
     scene: scene
   });
+}
 
+function sendTQ() {
+  let option = order.shift();
+  if (option == 't') {
+    sendText(textCounter);
+    textCounter++;
+  } else {
+    sendQ(questionCounter);
+    questionCounter++;
+  }
 }

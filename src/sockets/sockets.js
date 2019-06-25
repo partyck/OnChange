@@ -97,7 +97,7 @@ module.exports = server => {
       });
 
       socket.on('question', data => {
-        console.log('qquestion: ', { data });
+        console.log('question: ', { data });
         io.emit('question', data);
       });
 
@@ -111,7 +111,12 @@ module.exports = server => {
 
       socket.on('audienceAnswer', data => {
         console.log(`audienceAnswer: ${data.a}`);
+        io.emit('audienceAnswer', data);
       });
 
+      socket.on('text', data => {
+        console.log(`audienceAnswer: ${data.a}`);
+        io.emit('text', data);
+      });
     });
 };
