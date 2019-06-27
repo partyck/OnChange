@@ -63,6 +63,8 @@ let vote;
 let timer;
 let isFinale;
 let isFinaleSent;
+let initColor;
+let initColorF;
 
 let quote;
 let content;
@@ -85,12 +87,27 @@ function setup() {
   blue = 0;
   isFinale = false;
   isFinaleSent = false;
+  initColor = 255;
+  initColorF = true;
 }
 
 function draw() {
   switch (scene) {
     case 0:
-      background(255);
+      background(initColor);
+      if (initColorF) {
+        if (initColor < 210) {
+          initColorF = false;
+        } else {
+          initColor = initColor - 0.5;
+        }
+      } else {
+        if (initColor > 255) {
+          initColorF = true;
+        } else {
+          initColor = initColor + 0.6;
+        }
+      }
       break;
     case 1:
       background(red, green, blue);
@@ -293,6 +310,6 @@ function printNos() {
   text('NO', xcor, ycor);
 }
 
-function sendFinale(){
+function sendFinale() {
   socket.emit('finale', {});
 }

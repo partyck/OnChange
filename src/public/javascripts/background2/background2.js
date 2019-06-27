@@ -66,7 +66,9 @@ let content;
 let letterDistancesX;
 let letterDistancesY;
 let isFinale;
-let isFinaleSent
+let isFinaleSent;
+let initColor;
+let initColorF;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -81,13 +83,28 @@ function setup() {
   letterDistancesY = 100;
   isFinale = false;
   isFinaleSent = false;
+  initColor = 255;
+  initColorF = true;
   // background(0);
 }
 
 function draw() {
   switch (scene) {
     case 0:
-      background(255);
+      background(initColor);
+      if (initColorF) {
+        if (initColor < 210) {
+          initColorF = false;
+        } else {
+          initColor = initColor - 0.5;
+        }
+      } else {
+        if (initColor > 255) {
+          initColorF = true;
+        } else {
+          initColor = initColor + 0.6;
+        }
+      }
       break;
     case 1:
       background(red, green, blue);

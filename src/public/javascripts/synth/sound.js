@@ -76,6 +76,9 @@ function listenSockets() {
     let osc = osca[data.session - 1];
     osc.freq(freq);
   });
+  socket.on('scene', data => {
+    scene = data.scene;
+  });
 }
 
 function draw() {
@@ -89,25 +92,25 @@ function windowResized() {
   resizeCanvas(window.innerWidth, window.innerHeight);
 }
 
-function keyPressed() {
-  if (key > 0 && key < 10) {
-    console.log({ key });
-    socket.emit('sound', {
-      session: key,
-      index: 1
-    });
-  }
-}
+// function keyPressed() {
+//   if (key > 0 && key < 10) {
+//     // console.log({ key });
+//     socket.emit('sound', {
+//       session: key,
+//       index: 1
+//     });
+//   }
+// }
 
 function sendQ(i) {
-  console.log("send");
+  // console.log("send");
   socket.emit('question', {
     index: i
   });
 }
 
 function sendText(i) {
-  console.log("send");
+  // console.log("send");
   socket.emit('text', {
     index: i
   });
@@ -115,7 +118,7 @@ function sendText(i) {
 
 function changeScene(i) {
   scene = i;
-  console.log(`scene: ${i}`);
+  // console.log(`scene: ${i}`);
   socket.emit('scene', {
     scene: scene
   });

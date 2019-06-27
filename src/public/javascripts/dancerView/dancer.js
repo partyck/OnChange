@@ -43,7 +43,6 @@ function draw() {
 }
 
 function changeScene(scene) {
-  debugger;
   if (logic.scene !== scene) {
     logic.sendAttac();
     activeButton(scene);
