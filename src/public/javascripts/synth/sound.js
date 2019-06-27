@@ -15,7 +15,8 @@ let playing = false;
 let socket = io.connect();
 
 let scene = 0;
-let order = ['t', 'q', 't', 't', 't', 'q', 't', 'q', 't', 'q', 't'];
+let order = ['t', 'q', 't', 't', 't', 't', 'q', 't', 'q', 't', 'q', 't'];
+let scene4order = 4;
 let textCounter = 0;
 let questionCounter = 0;
 
@@ -51,8 +52,7 @@ function listenSockets() {
     if (scene == 1 || scene == 2) {
       let osc = osca[data.session - 1];
       osc.setType(typeOsc[0]);
-    }
-    if (scene == 3 || scene == 4) {
+    } else {
       let osc = osca[data.session - 1];
       osc.setType(typeOsc[1]);
     }
@@ -70,20 +70,9 @@ function listenSockets() {
     let freq = 0;
     if (scene == 1 || scene == 2) {
       freq = map(abs(data.value - 90), 0, 90, 40, 1000);
-    }
-    if (scene == 3 || scene == 4) {
+    } else {
       freq = map(abs(data.value), 0, 360, 40, 1000);
     }
-
-    // if (data.key === 'alpha') {
-    //   freq = map(abs(data.value), 0, 360, 40, 1000);
-    // }
-    // if (data.key === 'beta') {
-    //   freq = map(abs(data.value), 0, 180, 40, 1000);
-    // }
-    // if (data.key === 'gamma') {
-    //   freq = map(abs(data.value), 0, 90, 40, 1000);
-    // }
     let osc = osca[data.session - 1];
     osc.freq(freq);
   });
@@ -148,4 +137,9 @@ function sendTQ() {
     sendQ(questionCounter);
     questionCounter++;
   }
+}
+
+function send4() {
+  sendQ(scene4order);
+  scene4order++;
 }

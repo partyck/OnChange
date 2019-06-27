@@ -2,8 +2,8 @@ class ConsoleSimulator {
 
   constructor() {
     this.texts = new Array();
-    this.fontSize = 30;
-    this.distance = 30;
+    this.fontSize = 20;
+    this.distance = 20;
     this.numerLines = height / this.distance + 1;
   }
 

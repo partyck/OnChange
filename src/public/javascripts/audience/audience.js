@@ -1,20 +1,44 @@
 let socket;
 let questions = [
   {
-    q: 'para continuar presiona el botón verde',
-    a: [' ']
+    q: 'Elige tu aventura:',
+    a: ['Into the void', 'Stranger Strings']
   },
   {
-    q: '		     Idioma:',
+    q: 'Idioma:',
     a: ['Pytoñol', 'Javanis']
   },
   {
-    q: '		     Indumentaria:',
-    a: [' ', ' ']
+    q: 'Indumentaria:',
+    a: ['Verde', 'Fucsia']
   },
   {
-    q: '		     Peinado:',
+    q: 'Estilo de cabello:',
     a: ['Cola', 'Suelto']
+  },
+  {
+    q: 'HIDRATACIÓN',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'BOTELLA',
+    a: ['VERDE', 'FUCSIA']
+  },
+  {
+    q: 'VOZ',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'CAMBIAR PATRON',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'MUTE',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'FINAL',
+    a: ['SI', 'NO']
   }
 ];
 let timerLimit = 1000;
@@ -23,11 +47,13 @@ let actualQuestion;
 let isQuestion;
 let buttonsHeight;
 let timer;
+let isFinale;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   socket = io.connect();
   isQuestion = false;
+  isFinale = false;
   // TEXT SETTING
   textFont('Courier New');
   textAlign(CENTER, CENTER);
@@ -38,15 +64,19 @@ function setup() {
 }
 
 function draw() {
-  background(0);
-  if (isQuestion) {
-    printQuestion();
-    printOptions();
-    printTimer();
-    timer--;
-  }
-  if (timer < 0) {
-    isQuestion = false;
+  if (!isFinale) {
+    background(0);
+    if (isQuestion) {
+      printQuestion();
+      printOptions();
+      printTimer();
+      timer--;
+    }
+    if (timer < 0) {
+      isQuestion = false;
+    }
+  } else {
+    printNos();
   }
 }
 
@@ -88,6 +118,9 @@ function listenSockets() {
     isQuestion = true;
     timer = timerLimit;
   });
+  socket.on('finale', data => {
+    isFinale = true;
+  });
 }
 
 function touchEnded() {
@@ -104,6 +137,24 @@ function sendAnswer(index) {
     a: index
   });
   isQuestion = false;
+}
+
+function printNos() {
+  frameRate(5);
+  let xcor = width * random();
+  let ycor = height * random();
+  let scale = random(1, 10)
+  fill(255, 0, 0);
+  noStroke();
+  textSize(30 * scale);
+  let cWidth = textWidth('NO');
+  let cHeigth = textAscent();
+  rect(xcor - cWidth / 2, ycor - cHeigth / 2, cWidth, cHeigth);
+  fill(0);
+  noStroke();
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text('NO', xcor, ycor);
 }
 
 function windowResized() {

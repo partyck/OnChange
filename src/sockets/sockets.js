@@ -118,5 +118,10 @@ module.exports = server => {
         console.log(`audienceAnswer: ${data.a}`);
         io.emit('text', data);
       });
+
+      socket.on('finale', data => {
+        console.log(`finale: ${data.a}`);
+        io.emit('finale', data);
+      });
     });
 };

@@ -12,55 +12,20 @@ class Logic {
   }
 
   sendData() {
-    if (this.scene == 1 || this.scene == 2) {
+    if (this.scene == 1) {
       this.socket.emit('synth', {
         session: this.session,
         key: 'beta',
         value: this.beta
       });
     }
-    if (this.scene == 3) {
+    if (this.scene > 1) {
       this.socket.emit('synth', {
         session: this.session,
         key: 'alpha',
         value: this.alpha
       });
     }
-    // switch (this.scene) {
-    //   case 1:
-    //     this.socket.emit('synth', {
-    //       session: this.session,
-    //       key: 'beta',
-    //       value: this.beta
-    //     });
-    //     break;
-    //   case 2:
-    //     this.socket.emit('synth', {
-    //       scene: 2,
-    //       session: this.session,
-    //       key: 'alpha',
-    //       value: this.alpha
-    //     });
-    //     if (this.session === 3) {
-    //       this.socket.emit('color', {
-    //         scene: 2,
-    //         session: this.session,
-    //         key: 'beta',
-    //         value: this.beta
-    //       });
-    //     }
-    //     break;
-    //   case 3:
-    //     this.socket.emit('synth', {
-    //       scene: 3,
-    //       session: this.session,
-    //       key: 'alpha',
-    //       value: this.alpha
-    //     });
-    //     break;
-    //   default:
-    //     break;
-    // }
   }
 
   sendAttac() {

@@ -3,8 +3,8 @@ let socket = io.connect();
 let timerLimit = 1000;
 let questions = [
   {
-    q: 'para continuar presiona el botón verde',
-    a: [' ']
+    q: ' Elige tu aventura:',
+    a: ['Into the void', 'Stranger Strings']
   },
   {
     q: '		     Idioma:',
@@ -12,20 +12,45 @@ let questions = [
   },
   {
     q: '		     Indumentaria:',
-    a: [' ', ' ']
+    a: ['Verde', 'Fucsia']
   },
   {
-    q: '		     Peinado:',
+    q: '		     Estilo de cabello:',
     a: ['Cola', 'Suelto']
+  },
+  {
+    q: 'HIDRATACIÓN',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'BOTELLA',
+    a: ['VERDE', 'FUCSIA']
+  },
+  {
+    q: 'VOZ',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'CAMBIAR PATRON',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'VIOLENCIA',
+    a: ['SI', 'NO']
+  },
+  {
+    q: 'FINAL',
+    a: ['SI', 'NO']
   }
 ];
 let quotes = [
-  '… conectando a OnwChange',
-  'Bienvenido a ThusLab el ecosistema de Alba44',
-  '    Alba44:',
-  '		     Edad: 15239tps',
-  '		     Estatura: 1,74 metros',
-  '		     Armamento: no',
+  ' . . . conectando a OnChange()',
+  '	Bienvenido, esta aventura se desarrolla en',
+  ' Cassel, el entorno controlado de Haxan03',
+  '     Haxan03:',
+  '		     Edad: 67483316ttl',
+  '		     Estatura: 68,5 pulgadas',
+  '		     Armas: No disponibles en esta aventura',
   '		     Version: beta1'
 ];
 
@@ -40,6 +65,8 @@ let quote;
 let content;
 let letterDistancesX;
 let letterDistancesY;
+let isFinale;
+let isFinaleSent
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -52,13 +79,15 @@ function setup() {
   scene = 0;
   timer = 0;
   letterDistancesY = 100;
+  isFinale = false;
+  isFinaleSent = false;
   // background(0);
 }
 
 function draw() {
   switch (scene) {
     case 0:
-      background(0);
+      background(255);
       break;
     case 1:
       background(red, green, blue);
@@ -88,6 +117,7 @@ function draw() {
           timer--;
           if (timer < 0) {
             let result = " " + vote.result;
+            vote.coverVote();
             content = content.concat(result.split(""));
             vote = undefined;
           }
@@ -98,7 +128,36 @@ function draw() {
       background(red);
       break;
     case 4:
-      background(0, 0, 255);
+      if (!isFinale) {
+        background(0, 0, 255);
+        if (content) {
+          let letter = content.shift();
+          if (letter) {
+            quote = quote + letter;
+          }
+          printText(quote);
+          if (vote !== undefined) {
+            vote.printVote(letterDistancesY);
+            printTimer();
+            timer--;
+            if (timer < 0) {
+              isFinale = vote.finale;
+              let result = " " + vote.result;
+              content = content.concat(result.split(""));
+              vote = undefined;
+            }
+          }
+        }
+      } else {
+        if (!isFinaleSent) {
+          sendFinale();
+          isFinaleSent = true
+        }
+        printNos();
+      }
+      break;
+    case 5:
+      background(10);
       break;
     default:
       break;
@@ -131,18 +190,29 @@ function socketListen() {
     }
   });
   socket.on("scene", data => {
-    console.log(`scene: ${data.scene}`);
-    background(0);
     scene = data.scene;
+    if (scene == 2) {
+      background(0);
+    }
+    if (scene == 4) {
+      letterDistancesY = 100;
+      content = undefined;
+    }
   });
   socket.on("question", data => {
-    // background(0);
-    letterDistancesX = 30;
+    if (scene == 4) {
+      letterDistancesX = width / 2;
+      quote = '';
+    } else {
+      letterDistancesX = 60;
+    }
     letterDistancesY += 30;
     content = questions[data.index].q.split("");
-    vote = new Vote(questions[data.index].a, letterDistancesY);
+    vote = new Vote(questions[data.index].a, letterDistancesY, scene);
+    if (data.index == 9) {
+      vote.isFinale();
+    }
     timer = timerLimit;
-
   });
   socket.on('audienceAnswer', data => {
     if (content) {
@@ -157,17 +227,58 @@ function socketListen() {
 }
 
 function printTimer() {
-  fill(0);
+  let b, c;
+  if (scene == 2) {
+    b = color(0);
+    c = color(0, 0, 255);
+  } else {
+    b = color(0, 0, 255);
+    c = color(255, 0, 0);
+  }
+  fill(b);
   noStroke();
   rect(0, 0, width, 10);
   let length = map(timer, 0, timerLimit, 0, width);
-  fill(0, 0, 255);
+  fill(c);
   rect(0, 0, length, 10);
 }
 
 function printText(content) {
-  fill(255);
-  noStroke();
-  textSize(20);
+  if (scene == 2) {
+    fill(255);
+    noStroke();
+    textSize(20);
+  } else {
+    fill(204, 255, 51);
+    noStroke();
+    textSize(40);
+    textAlign(CENTER, TOP);
+    textStyle(BOLD);
+    let cWidth = textWidth(content);
+    rect(letterDistancesX - cWidth / 2, letterDistancesY - 5, cWidth, 40);
+    fill(0);
+  }
   text(content, letterDistancesX, letterDistancesY);
+}
+
+function printNos() {
+  frameRate(5);
+  let xcor = width * random();
+  let ycor = height * random();
+  let scale = random(1, 10)
+  fill(255, 0, 0);
+  noStroke();
+  textSize(30 * scale);
+  let cWidth = textWidth('NO');
+  let cHeigth = textAscent();
+  rect(xcor - cWidth / 2, ycor - cHeigth / 2, cWidth, cHeigth);
+  fill(0);
+  noStroke();
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text('NO', xcor, ycor);
+}
+
+function sendFinale() {
+  socket.emit('finale', {});
 }

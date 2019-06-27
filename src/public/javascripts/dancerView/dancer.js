@@ -123,7 +123,9 @@ function printData() {
 }
 
 function listenSockets() {
-  logic.socket.on('scene', data =>{
-    changeScene(data.scene);
-  });
+  // logic.socket.on('scene', data => {
+  //   if (data.scene != 1 || data.scene != 3) {
+  //     changeScene(data.scene);
+  //   }
+  // });
 }
