@@ -70,6 +70,12 @@ let isFinaleSent;
 let initColor;
 let initColorF;
 
+let smatphoneBlack;
+
+function preload() {
+  smatphoneBlack = loadImage('/assets/handSmartphoneBlack.png');
+}
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   textFont('Courier New');
@@ -125,16 +131,18 @@ function draw() {
       if (content) {
         let letter = content.shift();
         if (letter) {
-          letterDistancesX += 15;
+          letterDistancesX += 19;
           printText(letter);
         }
         if (vote !== undefined) {
           vote.printVote(letterDistancesY);
           printTimer();
+          printSPIcon();
           timer--;
           if (timer < 0) {
             let result = " " + vote.result;
             vote.coverVote();
+            coverSPI(color(0));
             content = content.concat(result.split(""));
             vote = undefined;
           }
@@ -156,6 +164,7 @@ function draw() {
           if (vote !== undefined) {
             vote.printVote(letterDistancesY);
             printTimer();
+            printSPIcon();
             timer--;
             if (timer < 0) {
               isFinale = vote.finale;
@@ -223,7 +232,7 @@ function socketListen() {
     } else {
       letterDistancesX = 60;
     }
-    letterDistancesY += 30;
+    letterDistancesY += 35;
     content = questions[data.index].q.split("");
     vote = new Vote(questions[data.index].a, letterDistancesY, scene);
     if (data.index == 9) {
@@ -238,7 +247,7 @@ function socketListen() {
   });
   socket.on('text', data => {
     letterDistancesX = 60;
-    letterDistancesY += 30;
+    letterDistancesY += 35;
     content = quotes[data.index].split("");
   });
 }
@@ -264,7 +273,7 @@ function printText(content) {
   if (scene == 2) {
     fill(255);
     noStroke();
-    textSize(20);
+    textSize(30);
   } else {
     fill(204, 255, 51);
     noStroke();
@@ -298,4 +307,14 @@ function printNos() {
 
 function sendFinale() {
   socket.emit('finale', {});
+}
+
+function printSPIcon() {
+  image(smatphoneBlack, width - 100, 60, 80, 80);
+}
+
+function coverSPI(color) {
+  fill(color);
+  noStroke();
+  rect(width - 100, 60, 80, 80);
 }

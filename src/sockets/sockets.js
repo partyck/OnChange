@@ -92,12 +92,12 @@ module.exports = server => {
       });
 
       socket.on('sound', data => {
-        console.log('sound: ', data);
+        // console.log('sound: ', data);
         io.emit('sound', data);
       });
 
       socket.on('question', data => {
-        console.log('question: ', { data });
+        // console.log('question: ', { data });
         io.emit('question', data);
       });
 
@@ -110,18 +110,24 @@ module.exports = server => {
       });
 
       socket.on('audienceAnswer', data => {
-        console.log(`audienceAnswer: ${data.a}`);
+        // console.log(`audienceAnswer: ${data.a}`);
         io.emit('audienceAnswer', data);
       });
 
       socket.on('text', data => {
-        console.log(`audienceAnswer: ${data.a}`);
+        // console.log(`audienceAnswer: ${data.a}`);
         io.emit('text', data);
       });
 
       socket.on('finale', data => {
-        console.log(`finale: ${data.a}`);
+        // console.log(`finale: ${data.a}`);
         io.emit('finale', data);
       });
+
+      socket.on('questionAudience', data => {
+        // console.log(`finale: ${data.a}`);
+        io.emit('questionAudience', data);
+      });
+
     });
 };

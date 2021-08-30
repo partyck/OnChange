@@ -9,11 +9,13 @@ let playing;
 let soundElem;
 
 let logic;
+let isPermissionGranted = false;
 
 function setup() {
+  // permiso();
   body = select('body');
   logic = new Logic(0);
-  listenSockets();
+  // listenSockets();
 
   sendElem = [
     select('#scene1'),
@@ -26,19 +28,21 @@ function setup() {
 }
 
 function draw() {
-  logic.sendData();
-  printData();
-  if (colorB) {
-    if (getMobileOperatingSystem() == 'iOS') {
-      let col = color(255 - logic.r, 255 - logic.g, 255 - logic.b);
-      body.style('background-color', col);
+  if (isPermissionGranted) {
+    logic.sendData();
+    printData();
+    if (colorB) {
+      if (getMobileOperatingSystem() == 'iOS') {
+        let col = color(255 - logic.r, 255 - logic.g, 255 - logic.b);
+        body.style('background-color', col);
+      } else {
+        let col = color(logic.r, logic.g, logic.b);
+        body.style('background-color', col);
+      }
     } else {
-      let col = color(logic.r, logic.g, logic.b);
+      let col = color(0);
       body.style('background-color', col);
     }
-  } else {
-    let col = color(0);
-    body.style('background-color', col);
   }
 }
 
@@ -51,6 +55,30 @@ function changeScene(scene) {
     logic.sendRelease();
     releseButton(scene);
     logic.scene = 0;
+  }
+}
+
+function permiso() {
+  // feature detect
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          console.log("motion event granted!");
+          isPermissionGranted = true;
+        }
+      })
+      .catch(console.error);
+    DeviceOrientationEvent.requestPermission()
+      .then(response => {
+        if (response == 'granted') {
+          console.log("Orientation event granted!");
+        }
+      })
+      .catch(console.error)
+  } else {
+    console.log("no es ios");
+    // handle regular non iOS 13+ devices
   }
 }
 

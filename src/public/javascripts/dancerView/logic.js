@@ -46,6 +46,9 @@ class Logic {
       this.r = map(acc.x, -9.8, 9.8, 0, 255);
       this.g = map(acc.y, -9.8, 9.8, 0, 255);
       this.b = map(acc.z, -9.8, 9.8, 0, 255);
+      this.x = acc.x;
+      this.y = acc.y;
+      this.z = acc.z;
     });
     window.addEventListener('deviceorientation', ev => {
       this.alpha = Math.round(ev.alpha);
@@ -53,6 +56,5 @@ class Logic {
       this.gamma = Math.round(ev.gamma);
     });
   }
-
 }
 

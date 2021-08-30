@@ -37,6 +37,7 @@ class Vote {
     let percent1 = map(this.counter1 * 100 / this.totalVotes, 0, 100, 0, 300);
     let percent2 = map(this.counter2 * 100 / this.totalVotes, 0, 100, 0, 300);
     this.printAnswersLabels();
+    // this.printSmartphoneIcon();
 
     fill(100);
     rect(this.a1X, this.vY, 300, 30);
@@ -56,7 +57,7 @@ class Vote {
       textSize(25);
       textAlign(LEFT, CENTER);
     } else {
-      fill(204, 255, 51);
+      fill(204, 255, 51); //verde
       noStroke();
       let cWidth = textWidth(this.answers[0]);
       rect(this.a1X, this.tY, cWidth, 40);

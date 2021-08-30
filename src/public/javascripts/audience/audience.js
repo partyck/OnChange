@@ -113,10 +113,12 @@ function printTimer() {
 }
 
 function listenSockets() {
-  socket.on('question', data => {
-    actualQuestion = data.index;
-    isQuestion = true;
-    timer = timerLimit;
+  socket.on('questionAudience', data => {
+    if (actualQuestion != data.index) {
+      actualQuestion = data.index;
+      isQuestion = true;
+      timer = timerLimit;
+    }
   });
   socket.on('finale', data => {
     isFinale = true;

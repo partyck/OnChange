@@ -20,14 +20,31 @@ let scene4order = 4;
 let textCounter = 0;
 let questionCounter = 0;
 
+let fft;
+
+//sliders
+let slider1, slider2, slier3;
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   background(0);
   strokeWeight(4);
   stroke(0, 255, 0);
   line(0, height / 2, width, height / 2);
-
   typeOsc = ['sine', 'square', 'sawtooth'];
+
+  fft = new p5.FFT(0, 256);
+
+  //sliders
+  slider1 = createSlider( 40, 1000, 300);
+  slider1.position(100 , 20);
+  slider1.style('width', '400px');
+  slider2 = createSlider( 40, 1000, 300);
+  slider2.position(100 , 40);
+  slider2.style('width', '400px');
+  slider3 = createSlider( 40, 1000, 300);
+  slider3.position(100 , 60);
+  slider3.style('width', '400px');
 
   osca = new Array();
   enva = new Array();
@@ -49,11 +66,10 @@ function setup() {
 function listenSockets() {
   socket.on('attack', data => {
     let env = enva[data.session - 1];
+    let osc = osca[data.session - 1];
     if (scene == 1 || scene == 2) {
-      let osc = osca[data.session - 1];
       osc.setType(typeOsc[0]);
     } else {
-      let osc = osca[data.session - 1];
       osc.setType(typeOsc[1]);
     }
     env.triggerAttack();
@@ -83,9 +99,27 @@ function listenSockets() {
 
 function draw() {
   background(0);
-  strokeWeight(4);
+  strokeWeight(10);
   stroke(0, 255, 0);
-  line(0, height / 2, width, height / 2);
+  noFill();
+  if (playing) {
+    let waveform = fft.waveform();
+    beginShape();
+    for (let i = 0; i < waveform.length; i++) {
+      let x = map(i, 0, waveform.length, 0, width);
+      let y = map(waveform[i], -1, 1, height, 0);
+      vertex(x, y);
+    }
+    endShape();
+
+    //sliders
+    osca[0].freq(slider1.value());
+    osca[1].freq(slider2.value());
+    osca[2].freq(slider3.value());
+
+  } else {
+    line(0, height / 2, width, height / 2);
+  }
 }
 
 function windowResized() {
@@ -129,6 +163,7 @@ function nextScene() {
   socket.emit('scene', {
     scene: scene
   });
+  return scene;
 }
 
 function sendTQ() {

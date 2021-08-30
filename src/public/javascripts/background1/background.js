@@ -68,10 +68,17 @@ let initColorF;
 
 let quote;
 let content;
+let actualQuestion;
 let letterDistancesX;
 let letterDistancesY;
 
 let consoleSimulator;
+
+let smatphoneBlack;
+
+function preload() {
+  smatphoneBlack = loadImage('/assets/handSmartphoneBlack.png');
+}
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -116,16 +123,19 @@ function draw() {
       if (content) {
         let letter = content.shift();
         if (letter) {
-          letterDistancesX += 15;
+          letterDistancesX += 19;
           printText(letter);
         }
         if (vote !== undefined) {
+          sendVotation();
           vote.printVote(letterDistancesY);
           printTimer();
+          printSPIcon();
           timer--;
           if (timer < 0) {
             let result = " " + vote.result;
             vote.coverVote();
+            coverSPI(color(0));
             content = content.concat(result.split(""));
             vote = undefined;
           }
@@ -145,6 +155,7 @@ function draw() {
           if (vote !== undefined) {
             vote.printVote(letterDistancesY);
             printTimer();
+            printSPIcon();
             timer--;
             if (timer < 0) {
               isFinale = vote.finale;
@@ -235,7 +246,8 @@ function socketListen() {
     } else {
       letterDistancesX = 60;
     }
-    letterDistancesY += 30;
+    letterDistancesY += 35;
+    actualQuestion = data.index;
     content = questions[data.index].q.split("");
     vote = new Vote(questions[data.index].a, letterDistancesY, scene);
     if (data.index == 9) {
@@ -252,7 +264,7 @@ function socketListen() {
   socket.on('text', data => {
     consoleSimulator.addObj(data);
     letterDistancesX = 60;
-    letterDistancesY += 30;
+    letterDistancesY += 35;
     content = quotes[data.index].split("");
   });
 }
@@ -278,7 +290,7 @@ function printText(content) {
   if (scene == 2) {
     fill(255);
     noStroke();
-    textSize(20);
+    textSize(30);
   } else {
     fill(204, 255, 51);
     noStroke();
@@ -312,4 +324,20 @@ function printNos() {
 
 function sendFinale() {
   socket.emit('finale', {});
+}
+
+function printSPIcon() {
+  image(smatphoneBlack, width - 100, 60, 80, 80);
+}
+
+function coverSPI(color) {
+  fill(color);
+  noStroke();
+  rect(width - 100, 60, 80, 80);
+}
+
+function sendVotation() {
+  socket.emit('questionAudience', {
+    index: actualQuestion
+  });
 }
