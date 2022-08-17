@@ -12,7 +12,6 @@ let options = {
 
 //initializations
 const app = express();
-// const server = http.createServer(app);
 const server = https.createServer(options, app);
 
 
@@ -40,9 +39,5 @@ app.use(session({
 //routes
 app.use('/', indexRoutes);
 
-// starting server
-// server.listen(app.get('port'), () => {
-//   console.log('Server on port ', app.get('port'));
-// });
 
 server.listen(443);

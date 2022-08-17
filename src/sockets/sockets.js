@@ -1,5 +1,5 @@
 const midi = require('midi');
-const midiOut = new midi.output();
+const midiOut = new midi.Output();
 const socket = require('socket.io');
 
 midiOut.openVirtualPort('');
