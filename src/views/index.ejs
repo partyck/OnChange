@@ -13,26 +13,36 @@
 
 <body>
   <div class="container">
-    <h1 class="text-light">INDEX</h1>
+    <h1 class="text-light">Demo</h1>
+    <h2 class="text-light">Diseño de la interacción de usuario orientado al uso en las artes escénicas contemporáneas</h2>
+    <h3 class="text-light" id="scene-tag">Escena:</h3>
+    <button onclick="changeScene(1)">1</button>
+    <button onclick="changeScene(2)">2</button>
+    <button onclick="changeScene(3)">3</button>
+    <button onclick="changeScene(4)">4</button>
+    <button onclick="changeScene(5)">5</button>
+    <h3 class="text-light">interfaces:</h3>
     <ul>
       <li>
-        <a href="/background"> Fondo </a>
+        <a href="/d">Bailarina</a>
       </li>
       <li>
-        <a href="/instruments"> Instrumentos </a>
+        <a href="/sound">Músico</a>
       </li>
       <li>
-        <a href="/sound"> Visualizador de coordenadas </a>
+        <a href="/audience">Público</a>
       </li>
       <li>
-        <a href="/synth"> Sintetizador </a>
+        <a href="/background">Fondo animado 1</a>
       </li>
       <li>
-        <a href="/dancerView"> Dancer View </a>
+        <a href="/background2">Fondo animado 2</a>
       </li>
     </ul>
   </div>
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascripts/index/index.js"></script>
   <script src="/javascripts/jquery-3.4.0.min.js"></script>
   <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 </body>
