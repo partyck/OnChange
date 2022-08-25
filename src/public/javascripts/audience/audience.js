@@ -54,7 +54,6 @@ function setup() {
   socket = io.connect();
   isQuestion = false;
   isFinale = false;
-  // TEXT SETTING
   textFont('Courier New');
   textAlign(CENTER, CENTER);
   textSize(30);

@@ -24,14 +24,12 @@ class Logic {
   }
 
   sendAttac() {
-    console.log('sendAttac');
     this.socket.emit('attack', {
       session: this.session
     })
   }
 
   sendRelease() {
-    console.log('sendRelease');
     this.socket.emit('release', {
       session: this.session
     });

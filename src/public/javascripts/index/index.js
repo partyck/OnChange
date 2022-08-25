@@ -12,7 +12,6 @@ socket.on('scene', data => {
 
 function changeScene(i) {
   scene = i;
-  console.log(`scene: ${scene}`);
   document.getElementById("scene-tag").innerHTML = `Escena: ${scene}`
   socket.emit('scene', {
     scene: scene
