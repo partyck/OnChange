@@ -9,15 +9,14 @@ router.get('/', (req, res, next) => {
   res.render('index', { scene: scene.getScene() });
 });
 
-router.get('/d', (req, res, next) => {
+router.get('/dancer', (req, res, next) => {
   if (!req.session.visitCount) {
     req.session.visitCount = sessionsCounter;
     sessionsCounter++;
   }
   console.log('scene: ', scene.getScene());
   console.log('session: ', req.session.visitCount);
-  res.render('dancerView', { session: req.session.visitCount, scene: scene.getScene() });
-
+  res.render('dancer', { session: req.session.visitCount, scene: scene.getScene() });
 });
 
 router.get('/sound', (req, res, next) => {
@@ -33,11 +32,6 @@ router.get('/audience', (req, res, next) => {
 router.get('/background', (req, res, next) => {
   console.log('scene: ', scene.getScene());
   res.render('background', { scene: scene.getScene() });
-});
-
-router.get('/background2', (req, res, next) => {
-  console.log('scene: ', scene.getScene());
-  res.render('background2', { scene: scene.getScene() });
 });
 
 module.exports = router;

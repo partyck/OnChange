@@ -119,30 +119,15 @@ function sendTQ() {
     default:
       break;
   }
-
-
-  if (scene === 2 && textCounter === 8) {
-    return
-  }
-  let option = order.shift();
-  if (scene === 2 && option == 't') {
-    sendText(textCounter);
-    textCounter++;
-  } else {
-    sendQ(questionCounter);
-    questionCounter++;
-  }
 }
 
 function sendText(i) {
-  console.log("send t: ", i);
   socket.emit('text', {
     index: i
   });
 }
 
 function sendQ(i) {
-  console.log("send q; ", i);
   socket.emit('questionAudience', {
     index: i
   });
