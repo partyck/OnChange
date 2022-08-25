@@ -11,7 +11,9 @@ socket.on('scene', data => {
 });
 
 function changeScene(i) {
+  document.getElementById(`scene-description-${scene}`).hidden = true
   scene = i;
+  document.getElementById(`scene-description-${scene}`).hidden = false
   document.getElementById("scene-tag").innerHTML = `Escena: ${scene}`
   socket.emit('scene', {
     scene: scene
