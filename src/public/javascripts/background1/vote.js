@@ -1,3 +1,7 @@
+let order = ['t', 'q', 't', 't', 't', 't', 'q', 't', 'q', 't', 'q', 't'];
+let textCounter = 0;
+let questionCounter = 0;
+
 class Vote {
   constructor(a, y, sc) {
     this.scene = sc;
@@ -91,3 +95,55 @@ class Vote {
   }
 }
 
+
+function sendTQ() {
+  switch (scene) {
+    case 2:
+      if (textCounter === 8) {
+        return;
+      }
+      let option = order.shift();
+      if (option == 't') {
+        sendText(textCounter);
+        textCounter++;
+      }
+      else{
+        sendQ(questionCounter);
+        questionCounter++;
+      }
+      break;
+    case 4:
+      sendQ(questionCounter);
+      questionCounter++;
+      break;
+    default:
+      break;
+  }
+
+
+  if (scene === 2 && textCounter === 8) {
+    return
+  }
+  let option = order.shift();
+  if (scene === 2 && option == 't') {
+    sendText(textCounter);
+    textCounter++;
+  } else {
+    sendQ(questionCounter);
+    questionCounter++;
+  }
+}
+
+function sendText(i) {
+  console.log("send t: ", i);
+  socket.emit('text', {
+    index: i
+  });
+}
+
+function sendQ(i) {
+  console.log("send q; ", i);
+  socket.emit('questionAudience', {
+    index: i
+  });
+}

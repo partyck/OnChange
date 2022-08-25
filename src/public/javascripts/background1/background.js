@@ -86,7 +86,7 @@ function setup() {
   socketListen();
 
   consoleSimulator = new ConsoleSimulator();
-  scene = 0;
+  scene = parseInt(document.getElementById("scene").textContent);
   timer = 0;
   letterDistancesY = 100;
   red = 0;
@@ -142,6 +142,9 @@ function draw() {
         }
       }
       break;
+    case 3:
+      background(red, green, blue);
+      consoleSimulator.print();
     case 4:
       if (!isFinale) {
         background(red, green, blue);
@@ -178,8 +181,8 @@ function draw() {
       background(10);
       break;
     default:
-      background(red, green, blue);
-      consoleSimulator.print();
+      // background(red, green, blue);
+      // consoleSimulator.print();
       break;
   }
 }
@@ -193,13 +196,13 @@ function asignValue(data) {
   if (scene == 1) {
     switch (data.session) {
       case '1':
-        red = map(abs(data.value - 90), 0, 50, 0, 255);
+        red = map(abs(data.alpha - 90), 0, 50, 0, 255);
         break;
       case '2':
-        green = map(abs(data.value - 90), 0, 50, 0, 255);
+        green = map(abs(data.alpha - 90), 0, 50, 0, 255);
         break;
       case '3':
-        blue = map(abs(data.value - 90), 0, 50, 0, 255);
+        blue = map(abs(data.alpha - 90), 0, 50, 0, 255);
         break;
       default:
         break;
@@ -211,7 +214,7 @@ function asignValue(data) {
     blue = 0;
   }
   if (scene == 3) {
-    let grey = map(data.value, 0, 360, 0, 255);
+    let grey = map(data.alpha, 0, 360, 0, 255);
     red = grey;
     green = grey;
     blue = grey;

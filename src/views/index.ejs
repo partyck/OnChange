@@ -12,15 +12,12 @@
 </head>
 
 <body>
-  <div class="container">
+  <div hidden id="scene"><%= scene %></div>
+  <div class="container p-3">
     <h1 class="text-light">Demo</h1>
     <h2 class="text-light">Diseño de la interacción de usuario orientado al uso en las artes escénicas contemporáneas</h2>
-    <h3 class="text-light" id="scene-tag">Escena:</h3>
-    <button onclick="changeScene(1)">1</button>
-    <button onclick="changeScene(2)">2</button>
-    <button onclick="changeScene(3)">3</button>
-    <button onclick="changeScene(4)">4</button>
-    <button onclick="changeScene(5)">5</button>
+  </div>
+  <div class="container p-4">
     <h3 class="text-light">interfaces:</h3>
     <ul>
       <li>
@@ -39,6 +36,19 @@
         <a href="/background2">Fondo animado 2</a>
       </li>
     </ul>
+  </div>
+  <div class="container p-4">
+    <div class="row p-2">
+      <h3 class="text-light m-0" id="scene-tag">Escena:</h3>
+    </div>
+    <div class="row p-2">
+      <button onclick="changeScene(0)">0</button>
+      <button onclick="changeScene(1)">1</button>
+      <button onclick="changeScene(2)">2</button>
+      <button onclick="changeScene(3)">3</button>
+      <button onclick="changeScene(4)">4</button>
+      <button onclick="changeScene(5)">5</button>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>

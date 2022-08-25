@@ -1,6 +1,7 @@
 let body;
 let hide = false;
 let colorB = true;
+let socket = io.connect();
 
 let sendElem;
 let isSending;
@@ -12,19 +13,9 @@ let logic;
 let isPermissionGranted = false;
 
 function setup() {
-  // permiso();
   body = select('body');
-  logic = new Logic(0);
-  // listenSockets();
-
-  sendElem = [
-    select('#scene1'),
-    select('#scene2'),
-    select('#scene3'),
-    select('#scene4'),
-    select('#scene5'),
-    select('#scene6')
-  ];
+  logic = new Logic();
+  logic.listenSockets();
 }
 
 function draw() {
@@ -58,8 +49,7 @@ function changeScene(scene) {
   }
 }
 
-function permiso() {
-  // feature detect
+function requestPermission() {
   if (typeof DeviceMotionEvent.requestPermission === 'function') {
     DeviceMotionEvent.requestPermission()
       .then(permissionState => {
@@ -76,40 +66,18 @@ function permiso() {
         }
       })
       .catch(console.error)
+      select('#permission').hide();
   } else {
-    console.log("no es ios");
-    // handle regular non iOS 13+ devices
+    alert( "No puedo acceder a los sensores de tu dispositivo :(" );
   }
-}
-
-function activeButton(scene) {
-  let ele = sendElem[scene - 1];
-  ele.addClass('btn-secondary');
-  ele.removeClass('btn-light');
-  if (logic.scene !== 0) {
-    ele = sendElem[logic.scene - 1];
-    ele.removeClass('btn-secondary');
-    ele.addClass('btn-light');
-  }
-}
-
-function releseButton(scene) {
-  let ele = sendElem[scene - 1];
-  ele.removeClass('btn-secondary');
-  ele.addClass('btn-light');
 }
 
 function hideToggle() {
-  // let hideButton = select('#hideButton')
   if (!hide) {
     select('#settings').hide();
-    // hideButton.addClass('btn-outline-dark');
-    // hideButton.removeClass('btn-danger');
     hide = true;
   } else {
     select('#settings').show();
-    // hideButton.removeClass('btn-outline-dark');
-    // hideButton.addClass('btn-danger');
     hide = false;
   }
 }
@@ -147,12 +115,4 @@ function printData() {
   select('#alphaTag').html(logic.alpha);
   select('#betaTag').html(logic.beta);
   select('#gammaTag').html(logic.gamma);
-}
-
-function listenSockets() {
-  // logic.socket.on('scene', data => {
-  //   if (data.scene != 1 || data.scene != 3) {
-  //     changeScene(data.scene);
-  //   }
-  // });
 }

@@ -1,37 +1,43 @@
 const express = require('express');
 const router = express.Router();
+let scene = require('../scene.js')
 
-var visitCounter = 1;
+let sessionsCounter = 0;
 
 router.get('/', (req, res, next) => {
-  res.render('index');
+  console.log('scene: ', scene.getScene());
+  res.render('index', { scene: scene.getScene() });
 });
 
 router.get('/d', (req, res, next) => {
-  if(!req.session.visitCount){
-    req.session.visitCount = visitCounter;
-    visitCounter++;
-    console.log('session: ', req.session.visitCount);
-    res.render('dancerView', {session: req.session.visitCount});
-  }else{
-    console.log('session: ', req.session.visitCount);
-    res.render('dancerView', {session: req.session.visitCount});
+  if (!req.session.visitCount) {
+    req.session.visitCount = sessionsCounter;
+    sessionsCounter++;
   }
+  console.log('scene: ', scene.getScene());
+  console.log('session: ', req.session.visitCount);
+  res.render('dancerView', { session: req.session.visitCount, scene: scene.getScene() });
+
 });
 
 router.get('/sound', (req, res, next) => {
-  res.render('sound');
+  console.log('scene: ', scene.getScene());
+  res.render('sound', { scene: scene.getScene() });
 });
 
 router.get('/audience', (req, res, next) => {
-  res.render('audience');
+  console.log('scene: ', scene.getScene());
+  res.render('audience', { scene: scene.getScene() });
 });
 
 router.get('/background', (req, res, next) => {
-  res.render('background');
+  console.log('scene: ', scene.getScene());
+  res.render('background', { scene: scene.getScene() });
 });
+
 router.get('/background2', (req, res, next) => {
-  res.render('background2');
+  console.log('scene: ', scene.getScene());
+  res.render('background2', { scene: scene.getScene() });
 });
 
 module.exports = router;

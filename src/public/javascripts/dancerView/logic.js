@@ -1,42 +1,59 @@
 class Logic {
 
-  constructor(scene) {
-    this.scene = scene;
+  constructor() {
     this.r = 0;
     this.g = 0;
     this.b = 0;
-    this.session = document.getElementById("session").textContent;
+    this.scene = parseInt(document.getElementById("scene").textContent);
+    this.session = parseInt(document.getElementById("session").textContent);
     this.socket = io.connect();
     this.accSuport = (window.DeviceMotionEvent ? true : false);
     this.listenAcc();
+    this.listenSockets()
   }
 
   sendData() {
-    if (this.scene == 1) {
+    if(this.scene === 1 || this.scene === 3 || this.scene === 4) {
       this.socket.emit('synth', {
         session: this.session,
-        key: 'beta',
-        value: this.beta
-      });
-    }
-    if (this.scene > 1) {
-      this.socket.emit('synth', {
-        session: this.session,
-        key: 'alpha',
-        value: this.alpha
+        alpha: this.alpha,
+        beta: this.beta,
+        gamma: this.gamma
       });
     }
   }
 
   sendAttac() {
+    console.log('sendAttac');
     this.socket.emit('attack', {
       session: this.session
     })
   }
 
   sendRelease() {
+    console.log('sendRelease');
     this.socket.emit('release', {
       session: this.session
+    });
+  }
+
+  changeScene(new_scene) {
+    if (this.scene === new_scene) {
+      return  
+    }
+    if (new_scene === 1 || new_scene === 2) {
+      this.sendAttac();
+    }
+    else {
+      this.sendRelease();
+    }
+    this.scene = new_scene;
+    document.getElementById("scene-tag").innerHTML = `Escena: ${new_scene}`
+  }
+
+  listenSockets() {
+    this.socket.on('scene', data => {
+      this.changeScene(data.scene)
     });
   }
 

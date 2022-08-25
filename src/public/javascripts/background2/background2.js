@@ -1,4 +1,3 @@
-// let colorB = 255;
 let socket = io.connect();
 let timerLimit = 1000;
 let questions = [
@@ -71,6 +70,7 @@ let initColor;
 let initColorF;
 
 let smatphoneBlack;
+let consoleSimulator;
 
 function preload() {
   smatphoneBlack = loadImage('/assets/handSmartphoneBlack.png');
@@ -80,18 +80,19 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   textFont('Courier New');
   socketListen();
+  background(0)
 
+  consoleSimulator = new ConsoleSimulator();
   red = 0;
   green = 0;
   blue = 0;
-  scene = 0;
+  scene = parseInt(document.getElementById("scene").textContent);
   timer = 0;
   letterDistancesY = 100;
   isFinale = false;
   isFinaleSent = false;
   initColor = 255;
   initColorF = true;
-  // background(0);
 }
 
 function draw() {
@@ -134,43 +135,55 @@ function draw() {
           letterDistancesX += 19;
           printText(letter);
         }
-        if (vote !== undefined) {
-          vote.printVote(letterDistancesY);
-          printTimer();
-          printSPIcon();
-          timer--;
-          if (timer < 0) {
-            let result = " " + vote.result;
-            vote.coverVote();
-            coverSPI(color(0));
-            content = content.concat(result.split(""));
-            vote = undefined;
-          }
-        }
-      }
-      break;
-    case 3:
-      background(red);
-      break;
-    case 4:
-      if (!isFinale) {
-        background(0, 0, 255);
-        if (content) {
-          let letter = content.shift();
-          if (letter) {
-            quote = quote + letter;
-          }
-          printText(quote);
+        else {
           if (vote !== undefined) {
             vote.printVote(letterDistancesY);
             printTimer();
             printSPIcon();
             timer--;
             if (timer < 0) {
-              isFinale = vote.finale;
               let result = " " + vote.result;
+              vote.coverVote();
+              coverSPI(color(0));
               content = content.concat(result.split(""));
               vote = undefined;
+            }
+          }
+          else {
+            sendTQ()
+          }
+        }
+      }
+      break;
+    case 3:
+      background(red);
+      consoleSimulator.print();
+      break;
+    case 4:
+      if (!isFinale) {
+        background(0, 0, 255);
+        consoleSimulator.print();
+        if (content) {
+          let letter = content.shift();
+          if (letter) {
+            quote = quote + letter;
+          }
+          else {
+            if (vote !== undefined) {
+              printText(quote);
+              vote.printVote(letterDistancesY);
+              printTimer();
+              printSPIcon();
+              timer--;
+              if (timer < 0) {
+                isFinale = vote.finale;
+                let result = " " + vote.result;
+                content = content.concat(result.split(""));
+                vote = undefined;
+              }
+            }
+            else {
+              sendTQ()
             }
           }
         }
@@ -187,7 +200,7 @@ function draw() {
       break;
     default:
       break;
-  }
+    }
 }
 
 function windowResized() {
@@ -196,43 +209,48 @@ function windowResized() {
 
 function socketListen() {
   socket.on('synth', data => {
-    if (scene == 1) {
+    consoleSimulator.addObj(data);
+    if (scene === 1) {
       switch (data.session) {
-        case '1':
-          red = map(abs(data.value - 90), 0, 50, 0, 255);
+        case 0:
+          red = map(abs(data.beta - 90), 0, 50, 0, 255);
           break;
-        case '2':
-          green = map(abs(data.value - 90), 0, 50, 0, 255);
+        case 1:
+          green = map(abs(data.beta - 90), 0, 50, 0, 255);
           break;
-        case '3':
-          blue = map(abs(data.value - 90), 0, 50, 0, 255);
+        case 2:
+          blue = map(abs(data.beta - 90), 0, 50, 0, 255);
           break;
         default:
           break;
       }
     }
-    if (scene == 3) {
-      red = map(data.value, 0, 360, 0, 255);
+    if (scene === 3) {
+      red = map(data.alpha, 0, 360, 0, 255);
     }
   });
   socket.on("scene", data => {
     scene = data.scene;
     if (scene == 2) {
       background(0);
+      sendTQ()
     }
     if (scene == 4) {
+      background(0, 0, 255);
       letterDistancesY = 100;
       content = undefined;
+      questionCounter = 4
+      sendTQ()
     }
   });
-  socket.on("question", data => {
+  socket.on("questionAudience", data => {
     if (scene == 4) {
       letterDistancesX = width / 2;
       quote = '';
     } else {
       letterDistancesX = 60;
+      letterDistancesY += 35;
     }
-    letterDistancesY += 35;
     content = questions[data.index].q.split("");
     vote = new Vote(questions[data.index].a, letterDistancesY, scene);
     if (data.index == 9) {
