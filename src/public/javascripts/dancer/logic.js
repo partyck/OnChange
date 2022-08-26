@@ -4,34 +4,23 @@ class Logic {
     this.r = 0;
     this.g = 0;
     this.b = 0;
-    this.session = document.getElementById("session").textContent;
+    this.scene = parseInt(document.getElementById("scene").textContent);
+    this.session = parseInt(document.getElementById("session").textContent);
     this.socket = io.connect();
     this.accSuport = (window.DeviceMotionEvent ? true : false);
+    this.listenAcc();
+    this.listenSockets()
   }
 
-  sendData(isSending) {
-    if (isSending[0]) {
+  sendData() {
+    if(this.scene === 1 || this.scene === 3 || this.scene === 4) {
       this.socket.emit('synth', {
         session: this.session,
-        key: 'alpha',
-        value: this.alpha
+        alpha: this.alpha,
+        beta: this.beta,
+        gamma: this.gamma
       });
     }
-    if (isSending[1]) {
-      this.socket.emit('synth', {
-        session: this.session,
-        key: 'beta',
-        value: this.beta
-      });
-    }
-    if (isSending[2]) {
-      this.socket.emit('synth', {
-        session: this.session,
-        key: 'gamma',
-        value: this.gamma
-      });
-    }
-    
   }
 
   sendAttac() {
@@ -46,12 +35,35 @@ class Logic {
     });
   }
 
+  changeScene(new_scene) {
+    if (this.scene === new_scene) {
+      return  
+    }
+    if (new_scene === 1 || new_scene === 2) {
+      this.sendAttac();
+    }
+    else {
+      this.sendRelease();
+    }
+    this.scene = new_scene;
+    document.getElementById("scene-tag").innerHTML = `Escena: ${new_scene}`
+  }
+
+  listenSockets() {
+    this.socket.on('scene', data => {
+      this.changeScene(data.scene)
+    });
+  }
+
   listenAcc() {
     window.addEventListener('devicemotion', ev => {
       var acc = ev.accelerationIncludingGravity;
       this.r = map(acc.x, -9.8, 9.8, 0, 255);
       this.g = map(acc.y, -9.8, 9.8, 0, 255);
       this.b = map(acc.z, -9.8, 9.8, 0, 255);
+      this.x = acc.x;
+      this.y = acc.y;
+      this.z = acc.z;
     });
     window.addEventListener('deviceorientation', ev => {
       this.alpha = Math.round(ev.alpha);
@@ -59,6 +71,5 @@ class Logic {
       this.gamma = Math.round(ev.gamma);
     });
   }
-
 }
 

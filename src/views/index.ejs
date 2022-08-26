@@ -12,27 +12,82 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1 class="text-light">INDEX</h1>
+  <div hidden id="scene">
+    <%= scene %>
+  </div>
+  <div class="container p-3">
+    <h1 class="text-light">Demo</h1>
+    <h2 class="text-light">Diseño de la interacción de usuario orientado al uso en las artes escénicas contemporáneas
+    </h2>
+  </div>
+  <div class="container p-4">
+    <h3 class="text-light">interfaces:</h3>
     <ul>
       <li>
-        <a href="/background"> Fondo </a>
+        <a href="/dancer">Bailarina</a>
       </li>
       <li>
-        <a href="/instruments"> Instrumentos </a>
+        <a href="/sound">Músico</a>
       </li>
       <li>
-        <a href="/sound"> Visualizador de coordenadas </a>
+        <a href="/audience">Público</a>
       </li>
       <li>
-        <a href="/synth"> Sintetizador </a>
-      </li>
-      <li>
-        <a href="/dancerView"> Dancer View </a>
+        <a href="/background">Fondo animado</a>
       </li>
     </ul>
   </div>
+  <div class="container p-4">
+    <div class="row m-2">
+      <button onclick="changeScene(0)">0</button>
+      <button onclick="changeScene(1)">1</button>
+      <button onclick="changeScene(2)">2</button>
+      <button onclick="changeScene(3)">3</button>
+      <button onclick="changeScene(4)">4</button>
+      <button onclick="changeScene(5)">5</button>
+    </div>
+    <div class="row m-2">
+      <h3 class="text-light m-0" id="scene-tag">Escena:</h3>
+    </div>
+    <div class="row m-3 text-light">
+      <p id="scene-description-0" hidden>En esta escena el público ingresa a la sala...</p>
+      <p id="scene-description-1" hidden>En esta escena se combina el prototipo Control y Sonido con el prototipo Flujo
+        y movimiento. <br>
+        Durante esta escena se cuelgan tres teléfonos del techo del escenario en un estado pendulante. La bailarina
+        inicia la escena impulsando los teléfonos y así inicia su oscilación. El movimiento de la oscilación es
+        capturado por la Interfaz de la Bailarina y traducido a sonido por la interfaz del músico. La interfaz Fondo
+        animado proyecta una animación que cambia según la oscilación.</p>
+      <p id="scene-description-2" hidden>En esta escena se utiliza el prototipo Preguntas. El cual consiste en una
+        votación en tiempo real entre los espectadores para decidir el curso de la obra. En esta escena en específico se
+        delimitan algunos aspectos de la historia que narra la obra. Se permite al público definir el nombre del
+        personaje,
+        el color del vestuario entre otras características.<br>
+        En el prototipo Preguntas intervienen las interfaces Público y Fondo Animado. La pregunta es proyectada en ambas
+        interfaces con la diferencia que en la interfaz Público se añaden dos botones con las opciones disponibles. Y en
+        Fondo Animado se muestran barras porcentuales que reflejan el estado actual de escrutinio. Se añade además una
+        Línea de Tiempo que anuncia el fin de la votación.</p>
+      <p id="scene-description-3" hidden>Al finalizar la ronda de preguntas la bailarina viste el color del vestuario
+        que el público decidió. Luego toma los teléfonos que aún siguen colgados en el escenario y los sujeta a su
+        cuerpo con ayuda de arneses. En ese momento los teléfonos empiezan a percibir y transmitir los movimientos de la
+        danza
+        de la bailarina. Los cualesson recibidos por la Interfaz del Músico y la del Fondo Animado para ser
+        transformados a
+        luz y sonido. Para esta escena se utilizan los prototipos Color y Movimiento y Control y Sonido. <br>
+        El fondo animado traduce la información recibida a escala de grises y la imprime como fondo. Además muestra una
+        consola ficticia que muestra los valores recibidos. El músico interviene en tiempo real los sonidos emitidos por
+        la interfaz Músico para generar un entorno sonoro que acompañe la danza de la bailarina.</p>
+      <p id="scene-description-4" hidden>Mientras la bailarina danza, se proyectan preguntas en el Fondo Animado sobre
+        alteraciones en la danza de la bailarina. El público responde estas preguntas a través del prototipo Preguntas.
+        Las primeras preguntas son muy objetivas y simples. Poco a poco las preguntas u órdenes se tornan más ambiguas y
+        filosóficas. Rozando con la moralidad del control</p>
+      <p id="scene-description-5" hidden>En esta escena y como final de la obra escénica, se utiliza el prototipo
+        preguntas una vez más con la diferencia de que en esta ocasión la bailarina no obedece el resultado de la
+        votación y se dibuja la palabra “NO” repetidas veces en todas las interfaces.</p>
+    </div>
+  </div>
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascripts/index/index.js"></script>
   <script src="/javascripts/jquery-3.4.0.min.js"></script>
   <script src="/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 </body>

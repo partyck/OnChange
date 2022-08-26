@@ -2,10 +2,9 @@
 <html>
 
 <head>
-  <title>THUS | <%= title %></title>
+  <title>OnChange();</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <link href='/assets/thusicon.ico' rel='shortcut icon'>
-  <!-- <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css"> -->
   <style>
     html,
     body {
@@ -16,8 +15,17 @@
       margin: 0;
       position: fixed;
     }
+
     canvas {
       vertical-align: top;
     }
   </style>
 </head>
+
+<body scroll="no">
+  <div hidden id="scene"><%= scene %></div>
+  <%- include('partials/imports'); -%>
+  <script src="/javascripts/audience/audience.js"></script>
+</body>
+
+</html>

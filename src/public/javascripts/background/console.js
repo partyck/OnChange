@@ -2,8 +2,8 @@ class ConsoleSimulator {
 
   constructor() {
     this.texts = new Array();
-    this.fontSize = 30;
-    this.distance = 30;
+    this.fontSize = 20;
+    this.distance = 20;
     this.numerLines = height / this.distance + 1;
   }
 
@@ -22,11 +22,14 @@ class ConsoleSimulator {
   addObj(obj) {
     let objString = JSON.stringify(obj);
     this.texts.push(objString);
+    if (this.texts.length > this.numerLines) {
+      this.texts.shift();
+    }
   }
 
   addString(strng) {
     this.texts.push(strng);
-    if (this.texts.length > this.numerLines ) {
+    if (this.texts.length > this.numerLines) {
       this.texts.shift();
     }
   }
